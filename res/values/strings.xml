@@ -3,5 +3,8 @@
 
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">OilyTips</string>
-
+	<string name="tip1">The Young Living blend Purification takes the sting out of fire ant bites. Use every 4-6 hours for 3 days to completely avoid the blistering and pain.</string>
+	<string name="tip2">Peppermint is great for relieving headaches. Rub it accross the forehead and on the temples.</string>
+	<string name="tip3">Use the Young Living blend R.C. for respiritory problems. Rub topically on chest and diffuse.</string>	
 </resources>
+		

@@ -11,28 +11,65 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.net.*;
+import android.graphics.*;
 
-public class WidgetProvider extends AppWidgetProvider {
+public class WidgetProvider extends AppWidgetProvider
+{
+	private TipsDbAdapter db;
 
-    //private static final String ACTION_CLICK = "ACTION_CLICK";
+	@Override
+	public void onEnabled(Context context)
+	{
+		InitDb(context);
+	}
+
+	private void InitDb(Context context)
+	{
+		if (db == null)
+		{
+			db = new TipsDbAdapter(context);
+			db.open();
+		}
+		if (db.getTipCount() < 3)
+		{
+			Bitmap ylIcon = BitmapFactory.decodeResource(context.getResources(),R.drawable.yllogo1);
+			Bitmap theivesIcon = BitmapFactory.decodeResource(context.getResources(),R.drawable.thieves1);
+			db.insertTip(new Tip(context.getString(R.string.tip1),theivesIcon));
+			db.insertTip(new Tip(context.getString(R.string.tip2),ylIcon));
+			db.insertTip(new Tip(context.getString(R.string.tip3),theivesIcon));
+			
+		}
+/*
+		 String[] tips = new String[]{
+		 "The Young Living blend Purification takes the sting out of fire ant bites. Use every 4-6 hours for 3 days to completely avoid the blistering and pain.",
+		 "Peppermint is great for relieving headaches. Rub it accross the forehead and on the temples.",
+		 "Use the Young Living blend R.C. for respiritory problems. Rub topically on chest & diffuse."
+		 };
+
+*/
+		}
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-                         int[] appWidgetIds) {
-
+                         int[] appWidgetIds) 
+	{
+		InitDb(context);
         // Get all ids
-        ComponentName thisWidget = new ComponentName(context,
-                WidgetProvider.class);
+        ComponentName thisWidget = new ComponentName(context, WidgetProvider.class);
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-        for (int widgetId : allWidgetIds) {
+        for (int widgetId : allWidgetIds)
+		{
 
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-                    R.layout.widget_layout);
+													  R.layout.widget_layout);
             // Set the text
-            String[] tipAndUri = getTipAndUri();
-            String tipText = tipAndUri[0];
+            Tip tip = getTipFromDb();
+            String tipText = tip.getTipText();
+
             //Uri tipUri = new Uri.Builder().appendPath(tipAndUri[1]).build();
-            remoteViews.setTextViewText(R.id.update, tipText);
+            //Bitmap icon = BitmapFactory.decodeResource(
+			remoteViews.setTextViewText(R.id.update, tipText);
+			remoteViews.setImageViewResource(R.id.icon, R.drawable.yllogo1);
             //remoteViews.setImageViewUri( R.id.icon, tipUri);
 
             // Register an onClickListener
@@ -42,31 +79,39 @@ public class WidgetProvider extends AppWidgetProvider {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+																	 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent);
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }
     }
 
-    private String[] getTipAndUri() {
-        String[] tips = new String[]{
-                "The Young Living blend Purification takes the sting out of fire ant bites. Use every 4-6 hours for 3 days to completely avoid the blistering and pain.",
-                "Peppermint is great for relieving headaches. Rub it accross the forehead and on the temples.",
-                "Use the Young Living blend R.C. for respiritory problems. Rub topically on chest & diffuse."
-        };
+	private Tip getTipFromDb()
+	{
+		return db.getRandomTip();
+	}
 
-        String[] uris = new String[]{
-                "@drawable/ic_launcher",
-                "@drawable/ic_launcher",
-                "@drawable/ic_launcher"
-        };
-        // Pick one
-        int number = (new Random().nextInt(tips.length));
-        String tipText = tips[number] +
-                " Get some today! (Tip #" + String.valueOf(number) + ")";
-        String uri = uris[number];
+	/*
+	 private Tip getTip()
+	 {
+	 String[] tips = new String[]{
+	 "The Young Living blend Purification takes the sting out of fire ant bites. Use every 4-6 hours for 3 days to completely avoid the blistering and pain.",
+	 "Peppermint is great for relieving headaches. Rub it accross the forehead and on the temples.",
+	 "Use the Young Living blend R.C. for respiritory problems. Rub topically on chest & diffuse."
+	 };
 
-        Log.w("WidgetExample", "tipText=" + tipText);
-        return new String[]{tipText, uri};
-    }
+	 String[] uris = new String[]{
+	 "@drawable/ic_launcher",
+	 "@drawable/ic_launcher",
+	 "@drawable/ic_launcher"
+	 };
+	 // Pick one
+	 int number = (new Random().nextInt(tips.length));
+	 String tipText = tips[number] +
+	 " Get some today! (Tip #" + String.valueOf(number) + ")";
+	 //String uri = uris[number];
+
+	 Log.w("WidgetExample", "tipText=" + tipText);
+	 return new Tip(tipText);
+	 }
+	 */
 } 
