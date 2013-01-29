@@ -75,7 +75,7 @@ public class WidgetProvider extends AppWidgetProvider
 		db = new TipsDbAdapter(context);
 		db.open();
 
-		if (db.getCount() < 9)
+		if (db.getCount() < 10)
 		{
 			db.deleteAll();
 
@@ -83,15 +83,20 @@ public class WidgetProvider extends AppWidgetProvider
 			Bitmap theivesIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves1);
 			Bitmap lavenderIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.lavender_field);
 			Bitmap kidScentsIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.kidscents1);
-			db.insertTip(new Tip(context.getString(R.string.tip1), ylIcon));
+			Bitmap frankincense= BitmapFactory.decodeResource(context.getResources(), R.drawable.frankincense);
+			Bitmap thievesSpray= BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves_spray);
+			Bitmap peppermint= BitmapFactory.decodeResource(context.getResources(), R.drawable.peppermint);
+			Bitmap rc= BitmapFactory.decodeResource(context.getResources(), R.drawable.rc);
+			db.insertTip(new Tip(context.getString(R.string.tip1), peppermint));
 			db.insertTip(new Tip(context.getString(R.string.tip2), ylIcon));
-			db.insertTip(new Tip(context.getString(R.string.tip3), ylIcon));
-			db.insertTip(new Tip(context.getString(R.string.tip4), ylIcon));
+			db.insertTip(new Tip(context.getString(R.string.tip3), rc));
+			db.insertTip(new Tip(context.getString(R.string.tip4), rc));
 			db.insertTip(new Tip(context.getString(R.string.tip5), ylIcon));
-			db.insertTip(new Tip(context.getString(R.string.tip6), ylIcon));
-			db.insertTip(new Tip(context.getString(R.string.tip7), theivesIcon));
+			db.insertTip(new Tip(context.getString(R.string.tip6), theivesIcon));
+			db.insertTip(new Tip(context.getString(R.string.tip7), frankincense));
 			db.insertTip(new Tip(context.getString(R.string.tip8), lavenderIcon));
 			db.insertTip(new Tip(context.getString(R.string.tip9), kidScentsIcon));
+			db.insertTip(new Tip(context.getString(R.string.tip10), thievesSpray));
 			
 		}
 		return db;
