@@ -30,7 +30,7 @@ public class TipsDbAdapter
 	" (" + 
 	KEY_ROWID + " integer primary key autoincrement, " +
 	KEY_TIP_TEXT + " text not null, " +
-	KEY_LOCAL_URI+ " text null, " +
+	KEY_LOCAL_URI + " text null, " +
 	KEY_SERVER_URL + " text null, " +
 	KEY_BITMAP_BYTES + " blob null " +
 	" );";
@@ -81,10 +81,17 @@ public class TipsDbAdapter
 		DBHelper.close();
 	}
 
+	public void deleteAll()
+	{
+		long count = db.delete(DATABASE_TABLE, "1", null);
+		Log.w(TAG, "Deleted " + count + "rows from database");
+	}
+
 	public long insertTip(Tip tip)
 	{
 		ContentValues values=new ContentValues();
 		values.put(KEY_TIP_TEXT, tip.getTipText());
+		values.put(KEY_BITMAP_BYTES, tip.getIconAsBytes());
 		return db.insert(DATABASE_TABLE, null, values);
 	}
 
@@ -92,46 +99,34 @@ public class TipsDbAdapter
 	{
 		Cursor cursor = db.rawQuery(
 			"SELECT count(" + KEY_TIP_TEXT + ") from " + DATABASE_TABLE, null);
-		//TODO: this could be cleaned up	
-		if (cursor.moveToFirst())
-		{
-			return cursor.getInt(0);
-		}
-		return cursor.getInt(0);
+
+		cursor.moveToFirst();
+		int tipCount = cursor.getInt(0);
+		Log.i(TAG, "getTipCount=" + tipCount);
+		return tipCount;
 	}
 
 
 	//TODO: refactor this per comments
 	public Tip getRandomTip()
 	{
-		//id = getAllEntries();
-		int rand  =0;
-		Random random = new Random();
-		try
-		{
-			rand  = random.nextInt(getTipCount());
-		}
-		catch (Exception ex)
-		{
-			Log.e(TAG, ex.toString());
-		}
-		if (rand == 0)
-			++rand;
 
 		Cursor cursor = db.rawQuery(
 			"SELECT " + 
+			KEY_ROWID + ", " +
 			KEY_TIP_TEXT + "," +  
-			KEY_LOCAL_URI+ "," +  
+			KEY_LOCAL_URI + "," +  
 			KEY_SERVER_URL + "," +  
 			KEY_BITMAP_BYTES +  
 			" from " + DATABASE_TABLE + 
-			" WHERE " + KEY_ROWID + " = " + rand, null);
+			" ORDER BY RANDOM() LIMIT 1", null);
 		//TODO: this could be cleaned up	
 		if (cursor.moveToFirst())
 		{
-			String tipText = cursor.getString(0) + " Get some today! (Tip #" + String.valueOf(rand) + ")";
-			
-			Tip tip = new Tip(tipText);
+			String tipText = cursor.getString(1) + " Get some today! (Tip #" + cursor.getInt(0) + ")";
+			byte[] iconBytes = cursor.getBlob(4);
+
+			Tip tip = new Tip(tipText, iconBytes);
 			return tip;
 		}
 		return null;
