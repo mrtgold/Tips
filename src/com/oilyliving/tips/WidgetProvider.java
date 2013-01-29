@@ -75,7 +75,7 @@ public class WidgetProvider extends AppWidgetProvider
 		db = new TipsDbAdapter(context);
 		db.open();
 
-		if (db.getTipCount() < 9)
+		if (db.getCount() < 9)
 		{
 			db.deleteAll();
 

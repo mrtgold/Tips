@@ -13,7 +13,6 @@ import android.database.sqlite.*;
 
 public class IconDbAdapter
 {
-	int id=0;
 	public static final String KEY_ROWID="_id";
 	public static final String KEY_ICON_NAME="IconName";
 	public static final String KEY_LOCAL_URI="LocalUri";

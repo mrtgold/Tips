@@ -13,7 +13,6 @@ import android.database.sqlite.*;
 
 public class TipsDbAdapter
 {
-	int id=0;
 	public static final String KEY_ROWID="_id";
 	public static final String KEY_TIP_TEXT="TipText";
 	public static final String KEY_LOCAL_URI="LocalUri";
@@ -95,19 +94,17 @@ public class TipsDbAdapter
 		return db.insert(DATABASE_TABLE, null, values);
 	}
 
-	public int getTipCount()
+	public int getCount()
 	{
 		Cursor cursor = db.rawQuery(
 			"SELECT count(" + KEY_TIP_TEXT + ") from " + DATABASE_TABLE, null);
 
 		cursor.moveToFirst();
 		int tipCount = cursor.getInt(0);
-		Log.i(TAG, "getTipCount=" + tipCount);
+		Log.i(TAG, "getCount=" + tipCount);
 		return tipCount;
 	}
 
-
-	//TODO: refactor this per comments
 	public Tip getRandomTip()
 	{
 
