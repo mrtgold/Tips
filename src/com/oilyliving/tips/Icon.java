@@ -1,114 +1,101 @@
 package com.oilyliving.tips;
-import android.graphics.*;
-import android.net.*;
-import android.content.res.*;
-import java.net.*;
-import java.io.*;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.text.TextUtils;
 
-public class Icon
-{
-	private final String name;
-	private String[] tags;
-	private Bitmap icon;
-	private Uri localUri;
-	private final URL serverUrl;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
 
-	public Icon(String name, Bitmap icon)
-	{
-		this.name = name;
-		this.icon = icon;
-		this.tags = null;
-		this.localUri = null;
-		this.serverUrl = null;
-	}
+public class Icon {
+    private final String name;
+    private String[] tags;
+    private Bitmap icon;
+    private Uri localUri;
+    private final URL serverUrl;
 
-	public Icon(String name, Bitmap icon, String[] tags)
-	{
-		this.name = name;
-		this.icon = icon;
-		this.tags = tags;
-		this.localUri = null;
-		this.serverUrl = null;
-	}
+    public Icon(String name, Bitmap icon) {
+        this.name = name;
+        this.icon = icon;
+        this.tags = null;
+        this.localUri = null;
+        this.serverUrl = null;
+    }
 
-	public Icon(String name, byte[] iconBytes, String tagString)
-	{
-		this.name = name;
-		this.icon = convertBytesToBitmap(iconBytes);
-		this.tags = null;
-		this.localUri = null;
-		this.serverUrl = null;
+    public Icon(String name, Bitmap icon, String[] tags) {
+        this.name = name;
+        this.icon = icon;
+        this.tags = tags;
+        this.localUri = null;
+        this.serverUrl = null;
+    }
 
-		setTagsFromString(tagString);
-	}
+    public Icon(String name, byte[] iconBytes, String tagString) {
+        this.name = name;
+        this.icon = convertBytesToBitmap(iconBytes);
+        this.tags = null;
+        this.localUri = null;
+        this.serverUrl = null;
 
-	public String getName()
-	{
-		return this.name;
-	}
+        setTagsFromString(tagString);
+    }
 
-	public String[] getTags()
-	{
-		return this.tags;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public String getTagsString()
-	{
-		return TextUtils.join(",",this.tags);
-	}
+    public String[] getTags() {
+        return this.tags;
+    }
 
-	public void setTagsFromString(String str)
-	{
-		this.tags = str.split(",");
-	}
+    public String getTagsString() {
+        return TextUtils.join(",", this.tags);
+    }
 
-	public Uri getLocalUri()
-	{
-		return this.localUri;
-	}
+    public void setTagsFromString(String str) {
+        this.tags = str.split(",");
+    }
 
-	public URL getServerUrl()
-	{
-		return this.serverUrl;
-	}
+    public Uri getLocalUri() {
+        return this.localUri;
+    }
 
-	public Bitmap getIconAsBitmap()
-	{
-		return this.icon;
-	}
+    public URL getServerUrl() {
+        return this.serverUrl;
+    }
 
-	public byte[] getIconAsBytes()
-	{
-		return convertBitmapToBytes(this.icon);
-	}
+    public Bitmap getIconAsBitmap() {
+        return this.icon;
+    }
 
-	public void setIconFromBytes(byte[] iconBytes)
-	{
-		this.icon = convertBytesToBitmap(iconBytes);
+    public byte[] getIconAsBytes() {
+        return convertBitmapToBytes(this.icon);
+    }
 
-	}
-	@Override
-	public String toString()
-	{
-		return this.name;
-	}
+    public void setIconFromBytes(byte[] iconBytes) {
+        this.icon = convertBytesToBitmap(iconBytes);
+
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 
 
-	private static Bitmap convertBytesToBitmap(byte[] bytes)
-	{
-		if (bytes == null) 
-			return null;
+    private static Bitmap convertBytesToBitmap(byte[] bytes) {
+        if (bytes == null)
+            return null;
 
-		return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);		
-	}
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
 
-	private static byte[] convertBitmapToBytes(Bitmap bitmap)
-	{
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-		return outputStream.toByteArray();
+    private static byte[] convertBitmapToBytes(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
 
-	}
+    }
 
 }
