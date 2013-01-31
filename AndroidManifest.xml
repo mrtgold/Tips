@@ -21,6 +21,11 @@
 				android:name="android.appwidget.provider"
 				android:resource="@xml/widget_info" />
 		</receiver>
+		
+		<activity 
+			android:label="Todays Oily Tip"
+			android:name="FullTipDialogActivity"
+			android:theme="@android:style/Theme.Dialog"/>
     </application>
 
 </manifest>

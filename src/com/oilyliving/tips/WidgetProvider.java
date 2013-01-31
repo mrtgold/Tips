@@ -1,62 +1,110 @@
 package com.oilyliving.tips;
 
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
-import android.widget.RemoteViews;
+import android.app.*;
+import android.appwidget.*;
+import android.content.*;
+import android.graphics.*;
+import android.os.*;
+import android.util.*;
+import android.widget.*;
+import com.oilyliving.tips.*;
 
-public class WidgetProvider extends AppWidgetProvider {
+public class WidgetProvider extends AppWidgetProvider
+{
     private static final String TAG = "TipsWidget";
+	public static final String EXTRA_TIP = "com.oilyliving.tips.WidgetProvider.EXTRA_TIP";
+	public static final String EXTRA_TIP_TEXT = "com.oilyliving.tips.WidgetProvider.EXTRA_TIP_TEXT";
 
     private boolean firstTime = true;
-    //	@Override
-//	public void onEnabled(Context context)
-//	{
-//		InitDb(context);
-//	}
-//
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-                         int[] appWidgetIds) {
-        // Get all ids
-        ComponentName thisWidget = new ComponentName(context, WidgetProvider.class);
-        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-        for (int widgetId : allWidgetIds) {
 
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-                    R.layout.widget_layout);
-            Tip tip = getTipFromDb(context);
+	/*	
+	 public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+	 final int N = appWidgetIds.length;
 
-            //Uri tipUri = new Uri.Builder().appendPath(tipAndUri[1]).build();
-            remoteViews.setTextViewText(R.id.tipText, tip.getTipText());
-            if (tip.getIconAsBitmap() == null)
-                remoteViews.setImageViewResource(R.id.icon, R.drawable.yllogo1);
-            else {
-                Log.i(TAG, "Yea! this one has an icon!");
-                remoteViews.setImageViewBitmap(R.id.icon, tip.getIconAsBitmap());
-            }
-            //remoteViews.setImageViewUri( R.id.icon, tipUri);
+	 // Perform this loop procedure for each App Widget that belongs to this provider 
+	 for (int i=0; i<N; i++) {
+	 int appWidgetId = appWidgetIds[i];
 
-            // Register an onClickListener
-            Intent intent = new Intent(context, WidgetProvider.class);
+	 // Create an Intent to launch ExampleActivity 
+	 Intent intent = new Intent(context, FullTipDialogActivity.class); 
+	 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+	 // Get the layout for the App Widget and attach an on-click listener 
+	 // to the button 
+	 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+	 views.setTextViewText(R.id.tipText,"Tip Text has been updated");
+	 views.setOnClickPendingIntent(R.id.next, pendingIntent);
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setOnClickPendingIntent(R.id.next, pendingIntent);
-            appWidgetManager.updateAppWidget(widgetId, remoteViews);
-        }
-    }
+	 // Tell the AppWidgetManager to perform an update on the current app widget 
+	 appWidgetManager.updateAppWidget(appWidgetId, views);
+	 }
+	 }
+	 */
+	@Override
+	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+						 int[] appWidgetIds)
+	{
+		// Get all ids
+		ComponentName thisWidget = new ComponentName(context, WidgetProvider.class);
+		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
-    private Tip getTipFromDb(Context context) {
+		for (int widgetId : allWidgetIds)
+		{			
+			appWidgetManager.updateAppWidget(widgetId, buildUpdate(context, appWidgetIds));
+		}
+
+
+	}
+
+	private RemoteViews buildUpdate(Context context, int[] appWidgetIds)
+	{
+		Tip tip = getTipFromDb(context);
+		RemoteViews remoteViews = setupRemoteViewWithTip(context, tip);
+
+		// Create an Intent to launch ExampleActivity 
+		Intent intent = new Intent(context, FullTipDialogActivity.class); 
+		intent.putExtra(WidgetProvider.EXTRA_TIP, tip);
+		intent.putExtra(WidgetProvider.EXTRA_TIP_TEXT, tip.getTipText());
+
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		remoteViews.setOnClickPendingIntent(R.id.tipText, pendingIntent);
+		remoteViews.setOnClickPendingIntent(R.id.icon, pendingIntent);
+
+		Intent getNextIntent = new Intent(context, WidgetProvider.class);
+
+		getNextIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+		getNextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+
+		PendingIntent getNextPI = PendingIntent.getBroadcast(context,
+															 0, getNextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		remoteViews.setOnClickPendingIntent(R.id.next, getNextPI);
+		return remoteViews;
+	}	
+
+	private RemoteViews setupRemoteViewWithTip(Context context, Tip tip)
+	{
+		//Tip tip = getTipFromDb(context);
+		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+												  R.layout.widget_layout);
+
+		//Uri tipUri = new Uri.Builder().appendPath(tipAndUri[1]).build();
+		remoteViews.setTextViewText(R.id.tipText, tip.getTipText());
+		if (tip.getIconAsBitmap() == null)
+			remoteViews.setImageViewResource(R.id.icon, R.drawable.yllogo1);
+		else
+		{
+			Log.i(TAG, "Yea! this one has an icon!");
+			remoteViews.setImageViewBitmap(R.id.icon, tip.getIconAsBitmap());
+		}
+
+		//remoteViews.setImageViewUri( R.id.icon, tipUri);
+
+		return remoteViews;
+	}
+
+    private Tip getTipFromDb(Context context)
+	{
         TipsDbAdapter db = InitDb(context);
         Tip randomTip = db.getRandomTip();
         db.close();
@@ -64,12 +112,14 @@ public class WidgetProvider extends AppWidgetProvider {
         return randomTip;
     }
 
-    private TipsDbAdapter InitDb(Context context) {
+    private TipsDbAdapter InitDb(Context context)
+	{
         TipsDbAdapter db;
         db = new TipsDbAdapter(context);
         db.open();
 
-        if (firstTime) {
+        if (firstTime)
+		{
             firstTime = false;
             db.deleteAll();
 
