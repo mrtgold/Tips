@@ -63,6 +63,7 @@ public class WidgetProvider extends AppWidgetProvider
 
 		// Create an Intent to launch ExampleActivity 
 		Intent intent = new Intent(context, FullTipDialogActivity.class); 
+		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		intent.putExtra(WidgetProvider.EXTRA_TIP, tip);
 		intent.putExtra(WidgetProvider.EXTRA_TIP_TEXT, tip.getTipText());
 
