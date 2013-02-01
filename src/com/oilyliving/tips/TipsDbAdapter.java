@@ -104,7 +104,7 @@ public class TipsDbAdapter {
                         " ORDER BY RANDOM() LIMIT 1", null);
         //TODO: this could be cleaned up
         if (cursor.moveToFirst()) {
-            String tipText = cursor.getString(1) + " Get some today! (Tip #" + cursor.getInt(0) + ")";
+            String tipText = cursor.getString(1) + " (Tip #" + cursor.getInt(0) + ")";
             byte[] iconBytes = cursor.getBlob(4);
 
             return new Tip(tipText, iconBytes);
