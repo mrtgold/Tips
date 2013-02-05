@@ -8,7 +8,7 @@
 	<ImageView
 		android:id="@+id/dialogIcon"
 		android:layout_width="90dp"
-		android:layout_height="72dp"
+		android:layout_height="wrap_content"
 		android:layout_marginLeft="4dp"
 		android:layout_marginRight="8dp"
 		android:layout_marginTop="8dp"
@@ -16,32 +16,43 @@
 		android:contentDescription="icon"/>
 	<LinearLayout
 		android:layout_weight="0"
-		android:layout_gravity="left"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:layout_width="wrap_content">	
-	<TextView
-		android:id="@+id/dialogTipText"
-		style="@android:style/TextAppearance.Medium"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		android:gravity="center_horizontal|center_vertical"
-		android:layout_margin="4dip"
-		android:text="blah balh balh"
-		android:layout_weight="1">
-	</TextView>
-	<TextView
-		android:id="@+id/dialogLink"
-		style="@android:style/TextAppearance.Large"
-		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:gravity="center_horizontal|center_vertical"
-		android:layout_margin="4dip"
-		android:text="@string/link"
-		android:layout_weight="1">
-	</TextView>
+		android:layout_width="wrap_content"
+		android:orientation="vertical">	
+		<TextView
+			android:id="@+id/dialogTipText"
+			style="@android:style/TextAppearance.Medium"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center_horizontal|center_vertical"
+			android:layout_margin="4dip"
+			android:text=" "
+			android:layout_weight="1">
+		</TextView>
+		<TextView
+			android:id="@+id/dialogLink"
+			style="@android:style/TextAppearance.Large"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center_horizontal|center_vertical"
+			android:layout_margin="4dip"
+			android:text="@string/link"
+			android:layout_weight="1">
+		</TextView>
+		<TextView
+			android:id="@+id/references"
+			style="@android:style/TextAppearance.Small"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center_horizontal|center_vertical"
+			android:layout_margin="4dip"
+			android:text=" "
+			android:layout_weight="1">
+		</TextView>
 	</LinearLayout>
 </LinearLayout>
 
