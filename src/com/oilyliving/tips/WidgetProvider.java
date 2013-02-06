@@ -8,6 +8,7 @@ import android.os.*;
 import android.util.*;
 import android.widget.*;
 import com.oilyliving.tips.*;
+import com.oilyliving.tips.data.*;
 
 public class WidgetProvider extends AppWidgetProvider
 {
@@ -15,7 +16,8 @@ public class WidgetProvider extends AppWidgetProvider
 	public static final String EXTRA_TIP = "com.oilyliving.tips.WidgetProvider.EXTRA_TIP";
 	public static final String EXTRA_TIP_TEXT = "com.oilyliving.tips.WidgetProvider.EXTRA_TIP_TEXT";
 
-    private boolean firstTime = true;
+    private boolean firstTimeTips = true;
+	private boolean firstTimeImages = true;
 
 	/*	
 	 public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -59,6 +61,7 @@ public class WidgetProvider extends AppWidgetProvider
 	private RemoteViews buildUpdate(Context context, int[] appWidgetIds)
 	{
 		Tip tip = getTipFromDb(context);
+
 		RemoteViews remoteViews = setupRemoteViewWithTip(context, tip);
 
 		// Create an Intent to launch ExampleActivity 
@@ -85,66 +88,74 @@ public class WidgetProvider extends AppWidgetProvider
 
 	private RemoteViews setupRemoteViewWithTip(Context context, Tip tip)
 	{
-		//Tip tip = getTipFromDb(context);
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 												  R.layout.widget_layout);
 
-		//Uri tipUri = new Uri.Builder().appendPath(tipAndUri[1]).build();
 		remoteViews.setTextViewText(R.id.tipText, tip.getTipText());
-		if (tip.getIconAsBitmap() == null)
+
+
+		if (tip.getIcon() == null || tip.getIcon().getIconAsBitmap() == null)
 			remoteViews.setImageViewResource(R.id.icon, R.drawable.yllogo1);
 		else
 		{
 			Log.i(TAG, "Yea! this one has an icon!");
-			remoteViews.setImageViewBitmap(R.id.icon, tip.getIconAsBitmap());
+			remoteViews.setImageViewBitmap(R.id.icon, tip.getIcon().getIconAsBitmap());
 		}
-
-		//remoteViews.setImageViewUri( R.id.icon, tipUri);
 
 		return remoteViews;
 	}
 
     private Tip getTipFromDb(Context context)
 	{
-        TipsDbAdapter db = InitDb(context);
-        Tip randomTip = db.getRandomTip();
+        TipsDbAdapter db = InitTipsDb(context);
+        Tip tip = db.getRandomTip();
         db.close();
-        Log.i(TAG, "got tip: " + randomTip);
-        return randomTip;
+
+		Icon icon = getIconFromDb(context, tip);
+		tip.setIcon(icon);
+
+        Log.i(TAG, "got tip: " + tip);
+        return tip;
     }
 
-    private TipsDbAdapter InitDb(Context context)
+    private Icon getIconFromDb(Context context, Tip tip)
+	{
+        IconDbAdapter db = InitIconsDb(context);
+        Icon icon = db.getIconByName(tip.getIconName());
+        db.close();
+        Log.i(TAG, "got icon: " + icon.getName());
+
+		return icon;
+	}
+
+    private TipsDbAdapter InitTipsDb(Context context)
 	{
         TipsDbAdapter db;
         db = new TipsDbAdapter(context);
         db.open();
 
-        if (firstTime)
+        if (firstTimeTips)
 		{
-            firstTime = false;
-            db.deleteAll();
-
-            Bitmap ylIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.yllogo1);
-            Bitmap thievesIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves1);
-            Bitmap lavenderIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.lavender_field);
-            Bitmap kidScentsIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.kidscents1);
-            Bitmap frankincense = BitmapFactory.decodeResource(context.getResources(), R.drawable.frankincense);
-            Bitmap thievesSpray = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves_spray);
-            Bitmap peppermint = BitmapFactory.decodeResource(context.getResources(), R.drawable.peppermint);
-            Bitmap rc = BitmapFactory.decodeResource(context.getResources(), R.drawable.rc);
-            db.insertTip(new Tip(context.getString(R.string.tip1), peppermint));
-            db.insertTip(new Tip(context.getString(R.string.tip2), ylIcon));
-            db.insertTip(new Tip(context.getString(R.string.tip3), rc));
-            db.insertTip(new Tip(context.getString(R.string.tip4), rc));
-            db.insertTip(new Tip(context.getString(R.string.tip5), ylIcon));
-            db.insertTip(new Tip(context.getString(R.string.tip6), thievesIcon));
-            db.insertTip(new Tip(context.getString(R.string.tip7), frankincense));
-            db.insertTip(new Tip(context.getString(R.string.tip8), lavenderIcon));
-            db.insertTip(new Tip(context.getString(R.string.tip9), kidScentsIcon));
-            db.insertTip(new Tip(context.getString(R.string.tip10), thievesSpray));
-
+            firstTimeTips = false;
+            db.InitTips(context);
         }
         return db;
     }
+
+
+	private IconDbAdapter InitIconsDb(Context context)
+	{
+        IconDbAdapter db;
+        db = new IconDbAdapter(context);
+        db.open();
+
+        if (firstTimeImages)
+		{
+            firstTimeImages= false;
+            db.InitIcons(context);
+        }
+        return db;
+    }
+
 
 } 

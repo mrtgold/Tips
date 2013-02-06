@@ -6,6 +6,7 @@ import android.view.*;
 import android.widget.*;
 import android.util.*;
 import android.text.method.*;
+import com.oilyliving.tips.data.*;
 
 
 public class FullTipDialogActivity extends Activity
@@ -29,7 +30,7 @@ public class FullTipDialogActivity extends Activity
 		link.setMovementMethod(LinkMovementMethod.getInstance());
 
 		ImageView iconView = (ImageView)findViewById(R.id.dialogIcon);
-		iconView.setImageBitmap(tip.getIconAsBitmap());
+		iconView.setImageBitmap(tip.getIcon().getIconAsBitmap());
 	}
 }
 	
