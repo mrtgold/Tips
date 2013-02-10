@@ -15,13 +15,23 @@ public class Tip implements Parcelable
 	private static final String TAG = "Tip";
     private final String tipText;
     private final String iconName;
+	private final URL reference;
 	private Icon icon;
+
+    public Tip(String tipText, String iconName, URL reference)
+	{
+        this.tipText = tipText;
+		this.iconName = iconName;
+        this.icon = null;
+		this.reference = null;
+    }
 
     public Tip(String tipText, String iconName)
 	{
         this.tipText = tipText;
 		this.iconName = iconName;
         this.icon = null;
+		this.reference = null;
     }
 
     public Tip(String tipText, Icon icon)
@@ -29,6 +39,7 @@ public class Tip implements Parcelable
         this.tipText = tipText;
         this.icon = icon;
         this.iconName = icon.getName();
+		this.reference = null;
     }
 
     public String getTipText()
@@ -87,6 +98,7 @@ public class Tip implements Parcelable
 		tipText = in.readString();
 		iconName= in.readString();
 		icon = Icon.CREATOR.createFromParcel(in);
+		this.reference = null;
 		Log.i(TAG, "tipText=" + tipText);
 		
 	}

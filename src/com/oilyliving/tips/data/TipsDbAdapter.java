@@ -33,7 +33,7 @@ public class TipsDbAdapter
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
 
-    public TipsDbAdapter(Context ctx)
+	public TipsDbAdapter(Context ctx)
 	{
         this.context = ctx;
         DBHelper = new DatabaseHelper(context);
@@ -123,15 +123,6 @@ public class TipsDbAdapter
 	public void InitTips(Context context)
 	{
 		this.deleteAll();
-
-		Bitmap ylIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.yllogo1);
-		Bitmap thievesIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves1);
-		Bitmap lavenderIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.lavender_field);
-		Bitmap kidScentsIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.kidscents1);
-		Bitmap frankincense = BitmapFactory.decodeResource(context.getResources(), R.drawable.frankincense);
-		Bitmap thievesSpray = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves_spray);
-		Bitmap peppermint = BitmapFactory.decodeResource(context.getResources(), R.drawable.peppermint);
-		Bitmap rc = BitmapFactory.decodeResource(context.getResources(), R.drawable.rc);
 		this.insertTip(new Tip(context.getString(R.string.tip1), "peppermint"));
 		this.insertTip(new Tip(context.getString(R.string.tip2), "ylIcon"));
 		this.insertTip(new Tip(context.getString(R.string.tip3), "rc"));

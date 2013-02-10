@@ -26,6 +26,14 @@ public class Icon implements Parcelable
         this.serverUrl = null;
     }
 
+    public Icon(String name, URL url) 
+	{
+        this.name = name;
+        this.icon = null;
+        this.tags = null;
+        this.serverUrl = url;
+    }
+
     public Icon(String name, Bitmap icon, String[] tags)
 	{
         this.name = name;

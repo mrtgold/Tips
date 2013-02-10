@@ -9,6 +9,7 @@ import android.util.*;
 import android.widget.*;
 import com.oilyliving.tips.*;
 import com.oilyliving.tips.data.*;
+import java.util.*;
 
 public class WidgetProvider extends AppWidgetProvider
 {
@@ -19,29 +20,6 @@ public class WidgetProvider extends AppWidgetProvider
     private boolean firstTimeTips = true;
 	private boolean firstTimeImages = true;
 
-	/*	
-	 public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-	 final int N = appWidgetIds.length;
-
-	 // Perform this loop procedure for each App Widget that belongs to this provider 
-	 for (int i=0; i<N; i++) {
-	 int appWidgetId = appWidgetIds[i];
-
-	 // Create an Intent to launch ExampleActivity 
-	 Intent intent = new Intent(context, FullTipDialogActivity.class); 
-	 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-
-	 // Get the layout for the App Widget and attach an on-click listener 
-	 // to the button 
-	 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-	 views.setTextViewText(R.id.tipText,"Tip Text has been updated");
-	 views.setOnClickPendingIntent(R.id.next, pendingIntent);
-
-	 // Tell the AppWidgetManager to perform an update on the current app widget 
-	 appWidgetManager.updateAppWidget(appWidgetId, views);
-	 }
-	 }
-	 */
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 						 int[] appWidgetIds)
@@ -54,8 +32,16 @@ public class WidgetProvider extends AppWidgetProvider
 		{			
 			appWidgetManager.updateAppWidget(widgetId, buildUpdate(context, appWidgetIds));
 		}
-
-
+	
+		
+		Intent intent = new Intent(context, DownloadService.class);
+		Context appContext = context.getApplicationContext();			
+		PendingIntent pIntent = PendingIntent.getService(appContext, 0, intent, 0);
+		AlarmManager alarm = (AlarmManager)appContext.getSystemService(Context.ALARM_SERVICE);
+		Calendar cal = Calendar.getInstance();
+		
+		// Start now
+		alarm.set(AlarmManager.RTC, cal.getTimeInMillis(), pIntent); 
 	}
 
 	private RemoteViews buildUpdate(Context context, int[] appWidgetIds)
