@@ -97,7 +97,7 @@ public class Icon implements Parcelable
     @Override
     public String toString()
 	{
-        return this.name;
+        return this.name + "(" + this.serverUrl + ")";
     }
 
 
@@ -121,11 +121,11 @@ public class Icon implements Parcelable
 
 	public void writeToParcel(Parcel out, int flags)
 	{
-		Log.i(TAG, "writing to parcel:" + name);
+		Log.d(TAG, "writing to parcel:" + name);
 		out.writeString(name);
 		icon.writeToParcel(out, 0);
 
-		Log.i(TAG, "parcel.dataSize:" + out.dataSize());		
+		Log.d(TAG, "parcel.dataSize:" + out.dataSize());		
 	}
 
 
@@ -140,9 +140,9 @@ public class Icon implements Parcelable
 
 	private Icon(Parcel in)
 	{ 
-		Log.i(TAG, "Reading from parcel");
+		Log.d(TAG, "Reading from parcel");
 		name = in.readString();
-		Log.i(TAG, "name=" + name);
+		Log.d(TAG, "name=" + name);
 		serverUrl = null;
 		icon = Bitmap.CREATOR.createFromParcel(in);
 

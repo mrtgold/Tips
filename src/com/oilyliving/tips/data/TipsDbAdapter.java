@@ -6,26 +6,33 @@ import android.database.sqlite.*;
 import android.graphics.*;
 import android.util.*;
 import com.oilyliving.tips.*;
+import java.util.*;
 
 public class TipsDbAdapter
 {     
-    public static final String KEY_ROWID = "_id";
-    public static final String KEY_TIP_TEXT = "TipText";
-    public static final String KEY_ICON_NAME = "IconName";
-    public static final String KEY_ICON_TAGS = "IconTags";
+    public static final String COL_ROWID = "_id";
+    public static final String COL_TIP_ID = "TipID";
+    public static final String COL_TIP_TEXT = "TipText";
+    public static final String COL_REFERNCE = "RefUrl";
+    public static final String COL_ICON_NAME = "IconName";
+    public static final String COL_ICON_TAGS = "IconTags";
+	public static final String COL_LAST_MOD_MSEC_EOPOCH= "LastModifiedMSecEpoch";
     private static final String TAG = "TipsDbAdapter";
 
     private static final String DATABASE_NAME = "OilyTips";
     private static final String DATABASE_TABLE = "tblTips";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String DATABASE_CREATE =
 	"create table " + DATABASE_TABLE +
 	" (" +
-	KEY_ROWID + " integer primary key autoincrement, " +
-	KEY_TIP_TEXT + " text not null, " +
-	KEY_ICON_NAME + " text null, " +
-	KEY_ICON_TAGS + " text null " +
+	COL_ROWID + " integer primary key autoincrement, " +
+	COL_TIP_ID + " integer not null, " +
+	COL_TIP_TEXT + " text not null, " +
+	COL_REFERNCE + " text null, " +
+	COL_ICON_NAME + " text null, " +
+	COL_ICON_TAGS + " text null, " +
+	COL_LAST_MOD_MSEC_EOPOCH + " long null " +
 	" );";
 
     private final Context context;
@@ -83,56 +90,82 @@ public class TipsDbAdapter
     public long insertTip(Tip tip)
 	{
         ContentValues values = new ContentValues();
-        values.put(KEY_TIP_TEXT, tip.getTipText());
-        values.put(KEY_ICON_NAME, tip.getIconName());
+		values.put(COL_TIP_ID, tip.getTipId());
+        values.put(COL_TIP_TEXT, tip.getTipText());
+        values.put(COL_ICON_NAME, tip.getIconName());
+		values.put(COL_REFERNCE, "");
+		values.put(COL_LAST_MOD_MSEC_EOPOCH, tip.getLastModifiedDate().getTime());
         return db.insert(DATABASE_TABLE, null, values);
     }
 
+	private Tip getTip(String whereClause, String orderBy)
+	{
+
+		String select = "SELECT " +
+			COL_ROWID + ", " +
+			COL_TIP_ID + ", " +
+			COL_TIP_TEXT + "," +
+			COL_ICON_NAME +"," +
+			COL_REFERNCE +"," +
+			COL_LAST_MOD_MSEC_EOPOCH +
+			" from "  + DATABASE_TABLE + " " +
+			whereClause +  " " +
+			orderBy +  " " +
+			" LIMIT 1";
+
+		Cursor cursor = db.rawQuery(select, null);
+        //TODO: this could be cleaned up
+        if (cursor.moveToFirst())
+		{
+			int rowId = cursor.getInt(0);
+			int tipId = cursor.getInt(1);
+            String tipText = cursor.getString(2) + " (Tip #" + rowId + ")";
+            String iconName = cursor.getString(3);
+			String ref = cursor.getString(4);
+			long lastModMsecEpoch = cursor.getLong(5);
+			Date lastMod = new Date(lastModMsecEpoch);
+            return new Tip(tipId, tipText, iconName,ref,lastMod);
+        }
+        return null;
+    }
+
+	
     public int getCount()
 	{
         Cursor cursor = db.rawQuery(
-			"SELECT count(" + KEY_TIP_TEXT + ") from " + DATABASE_TABLE, null);
+			"SELECT count(" + COL_ROWID + ") from " + DATABASE_TABLE, null);
 
         cursor.moveToFirst();
         int tipCount = cursor.getInt(0);
-        Log.i(TAG, "getCount=" + tipCount);
+        Log.d(TAG, "getCount=" + tipCount);
         return tipCount;
     }
 
     public Tip getRandomTip()
 	{
+		String orderBy = " ORDER BY RANDOM() ";
+		return getTip("", orderBy);
+	}
 
-        Cursor cursor = db.rawQuery(
-			"SELECT " +
-			KEY_ROWID + ", " +
-			KEY_TIP_TEXT + "," +
-			KEY_ICON_NAME +
-			" from " + DATABASE_TABLE +
-			" ORDER BY RANDOM() LIMIT 1", null);
-        //TODO: this could be cleaned up
-        if (cursor.moveToFirst())
-		{
-            String tipText = cursor.getString(1) + " (Tip #" + cursor.getInt(0) + ")";
-            String iconName = cursor.getString(2);
-
-            return new Tip(tipText, iconName);
-        }
-        return null;
-    }
+    public Tip getTipById(int id)
+	{
+		String whereClause = " WHERE " + COL_TIP_ID + "=" + id;
+		return getTip(whereClause,"");
+	}
 
 	public void InitTips(Context context)
 	{
 		this.deleteAll();
-		this.insertTip(new Tip(context.getString(R.string.tip1), "peppermint"));
-		this.insertTip(new Tip(context.getString(R.string.tip2), "ylIcon"));
-		this.insertTip(new Tip(context.getString(R.string.tip3), "rc"));
-		this.insertTip(new Tip(context.getString(R.string.tip4), "rc"));
-		this.insertTip(new Tip(context.getString(R.string.tip5), "ylIcon"));
-		this.insertTip(new Tip(context.getString(R.string.tip6), "thievesIcon"));
-		this.insertTip(new Tip(context.getString(R.string.tip7), "frankincense"));
-		this.insertTip(new Tip(context.getString(R.string.tip8), "lavenderIcon"));
-		this.insertTip(new Tip(context.getString(R.string.tip9), "kidScentsIcon"));
-		this.insertTip(new Tip(context.getString(R.string.tip10), "thievesSpray"));
+		this.insertTip(new Tip(1, context.getString(R.string.tip1), "peppermint"));
+		this.insertTip(new Tip(2, context.getString(R.string.tip2), "ylIcon"));
+		this.insertTip(new Tip(3, context.getString(R.string.tip3), "rc"));
+		this.insertTip(new Tip(4, context.getString(R.string.tip4), "rc"));
+		this.insertTip(new Tip(5, context.getString(R.string.tip5), "ylIcon"));
+		this.insertTip(new Tip(6, context.getString(R.string.tip6), "thievesIcon"));
+		this.insertTip(new Tip(7, context.getString(R.string.tip7), "frankincense"));
+		this.insertTip(new Tip(8, context.getString(R.string.tip8), "lavenderIcon"));
+		this.insertTip(new Tip(9, context.getString(R.string.tip9), "kidScentsIcon"));
+		this.insertTip(new Tip(10, context.getString(R.string.tip10), "thievesSpray"));
 	}
 
 }

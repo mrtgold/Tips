@@ -84,7 +84,7 @@ public class WidgetProvider extends AppWidgetProvider
 			remoteViews.setImageViewResource(R.id.icon, R.drawable.yllogo1);
 		else
 		{
-			Log.i(TAG, "Yea! this one has an icon!");
+			Log.d(TAG, "Yea! this one has an icon!");
 			remoteViews.setImageViewBitmap(R.id.icon, tip.getIcon().getIconAsBitmap());
 		}
 
@@ -100,7 +100,7 @@ public class WidgetProvider extends AppWidgetProvider
 		Icon icon = getIconFromDb(context, tip);
 		tip.setIcon(icon);
 
-        Log.i(TAG, "got tip: " + tip);
+        Log.d(TAG, "got tip: " + tip);
         return tip;
     }
 
@@ -109,7 +109,7 @@ public class WidgetProvider extends AppWidgetProvider
         IconDbAdapter db = InitIconsDb(context);
         Icon icon = db.getIconByName(tip.getIconName());
         db.close();
-        Log.i(TAG, "got icon: " + icon.getName());
+        Log.d(TAG, "got icon: " + icon.getName());
 
 		return icon;
 	}

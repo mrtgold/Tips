@@ -44,29 +44,28 @@ public class DownloadService extends IntentService
 			{
 				Log.i(TAG, "Not online");//, will try again in " + failureTimeoutMsec / 1000 + " sec");
 				Log.i(TAG, "Download failed - setting interval to " + failureTimeoutMsec + "msec");
-//			alarm.cancel(pIntent);
-//			alarm.setInexactRepeating(AlarmManager.RTC, cal.getTimeInMillis(), failureTimeoutMsec, pIntent); 
 				alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + failureTimeoutMsec, pIntent); 
 				result = Activity.RESULT_OK;
-//			return;
 			}
 			else
-			{		String urlPath = "http://tgoldingtutorial1.appspot.com/csv";//context.getString(R.string.downloadUrl);
+			{		
+				String urlPath = "http://oilytipsupdate.appspot.com/csv1";//context.getString(R.string.downloadUrl);
 				Log.i(TAG, "Starting download: " + urlPath);
 
+				List<String> lines = download(urlPath);
 				List<Tip> tips = new ArrayList<Tip>();
 				List<Icon> icons = new ArrayList<Icon>();
 
-				downloadAndParse(urlPath, tips, icons);
+				CsvParser.Parse(lines, tips, icons);
 
 				for (Tip tip:tips)
 				{
-					Log.i(TAG, "Got tip:" + tip);
+					Log.d(TAG, "Got tip:" + tip);
 				}
 
 				for (Icon icon:icons)
 				{
-					Log.i(TAG, "Got icon:" + icon);
+					Log.d(TAG, "Got icon:" + icon);
 				}
 
 
@@ -75,13 +74,11 @@ public class DownloadService extends IntentService
 
 				Log.i(TAG, "Download succeeded - setting interval to " + successTimeoutMsec + "msec");
 				alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + successTimeoutMsec, pIntent); 
-//			alarm.cancel(pIntent);
-//			alarm.setInexactRepeating(AlarmManager.RTC, cal.getTimeInMillis(), successTimeoutMsec, pIntent); 
-//
 			}
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			Log.i(TAG, "Download failed - setting interval to " + failureTimeoutMsec + "msec");
 			alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + failureTimeoutMsec, pIntent); 
 
@@ -90,8 +87,9 @@ public class DownloadService extends IntentService
 	}
 
 
-	private void downloadAndParse(String urlPath, List<Tip> tips, List<Icon> icons)
-	{
+	private List<String> download(String urlPath)
+	{	
+		List<String> lines = new ArrayList<String>();
 		InputStream stream = null;
 		try
 		{
@@ -104,7 +102,7 @@ public class DownloadService extends IntentService
 				String line;
 				while ((line = reader.readLine()) != null)
 				{
-					parseLine(line, tips, icons);
+					lines.add(line);
 				}
 			}
 			catch (IOException ex)
@@ -142,26 +140,10 @@ public class DownloadService extends IntentService
 				}
 			}
 		}
+		
+		return lines;
 	}
 
-	private void parseLine(String line, List<Tip> tips, List<Icon> icons) throws MalformedURLException
-	{
-		Log.i(TAG, "Got line:" + line);
-		String[] RowData = line.split(",");
-		String tipText = RowData[1].replaceAll("\"", "");
-		String iconUrlString = RowData[2].replaceAll("\"", "");
-		String referenceUrlString = RowData[3].replaceAll("\"", "");
-
-		URL iconURL = new URL(iconUrlString);
-		String iconName = iconURL.getFile();
-		Icon icon = new Icon(iconName, iconURL);
-		icons.add(icon);
-
-		URL referenceUrl= new URL(referenceUrlString);
-		Tip tip = new Tip(tipText, iconName, referenceUrl);
-		tips.add(tip);		
-
-	}
 	public boolean isOnline()
 	{
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

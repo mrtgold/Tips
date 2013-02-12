@@ -9,13 +9,14 @@ import com.oilyliving.tips.*;
 
 public class IconDbAdapter
 {
-    public static final String KEY_ROWID = "_id";
-    public static final String KEY_ICON_NAME = "IconName";
-    public static final String KEY_LOCAL_URI = "LocalUri";
-    public static final String KEY_SERVER_URL = "ServerUrl";
-    public static final String KEY_BITMAP_BYTES = "BitmapBytes";
-    public static final String KEY_TAGS_STRING = "TagsString";
     private static final String TAG = "IconDbAdapter";
+
+    public static final String COL_ROWID = "_id";
+    public static final String COL_ICON_NAME = "IconName";
+    public static final String COL_LOCAL_URI = "LocalUri";
+    public static final String COL_SERVER_URL = "ServerUrl";
+    public static final String COL_BITMAP_BYTES = "BitmapBytes";
+    public static final String COL_TAGS_STRING = "TagsString";
 
     private static final String DATABASE_NAME = "OilyTipsIcons";
     private static final String DATABASE_TABLE = "tblIcons";
@@ -24,22 +25,22 @@ public class IconDbAdapter
     private static final String DATABASE_CREATE =
 	"create table " + DATABASE_TABLE +
 	" (" +
-	KEY_ROWID + " integer primary key autoincrement, " +
-	KEY_ICON_NAME + " text not null, " +
-	KEY_LOCAL_URI + " text null, " +
-	KEY_SERVER_URL + " text null, " +
-	KEY_BITMAP_BYTES + " blob null, " +
-	KEY_TAGS_STRING + " text null " +
+	COL_ROWID + " integer primary key autoincrement, " +
+	COL_ICON_NAME + " text not null, " +
+	COL_LOCAL_URI + " text null, " +
+	COL_SERVER_URL + " text null, " +
+	COL_BITMAP_BYTES + " blob null, " +
+	COL_TAGS_STRING + " text null " +
 	" );";
 
     private static final String SELECT_ALL_COLUMNS =
 	"SELECT " +
-	KEY_ROWID + ", " +
-	KEY_ICON_NAME + "," +
-	KEY_LOCAL_URI + "," +
-	KEY_SERVER_URL + "," +
-	KEY_BITMAP_BYTES + "," +
-	KEY_TAGS_STRING +
+	COL_ROWID + ", " +
+	COL_ICON_NAME + "," +
+	COL_LOCAL_URI + "," +
+	COL_SERVER_URL + "," +
+	COL_BITMAP_BYTES + "," +
+	COL_TAGS_STRING +
 	" from " + DATABASE_TABLE;
 
     private final Context context;
@@ -97,9 +98,9 @@ public class IconDbAdapter
     public long insertIcon(Icon icon)
 	{
         ContentValues values = new ContentValues();
-        values.put(KEY_ICON_NAME, icon.getName());
+        values.put(COL_ICON_NAME, icon.getName());
 //        values.put(KEY_SERVER_URL, icon.getServerUrl().toString());
-        values.put(KEY_BITMAP_BYTES, icon.getIconAsBytes());
+        values.put(COL_BITMAP_BYTES, icon.getIconAsBytes());
 ////        values.put(KEY_TAGS_STRING, icon.getTagsString());
         return db.insert(DATABASE_TABLE, null, values);
     }
@@ -107,11 +108,11 @@ public class IconDbAdapter
     public int getCount()
 	{
         Cursor cursor = db.rawQuery(
-			"SELECT count(" + KEY_ICON_NAME + ") from " + DATABASE_TABLE, null);
+			"SELECT count(" + COL_ICON_NAME + ") from " + DATABASE_TABLE, null);
 
         cursor.moveToFirst();
         int count = cursor.getInt(0);
-        Log.i(TAG, "getCount=" + count);
+        Log.d(TAG, "getCount=" + count);
         return count;
     }
 
@@ -133,7 +134,7 @@ public class IconDbAdapter
 	{
         Cursor cursor = db.rawQuery(
 			SELECT_ALL_COLUMNS +
-			" WHERE " + KEY_ICON_NAME + " ='" + name + "'"
+			" WHERE " + COL_ICON_NAME + " ='" + name + "'"
 			, null);
 
         if (cursor.moveToFirst())
