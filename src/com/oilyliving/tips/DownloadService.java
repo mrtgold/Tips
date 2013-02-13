@@ -9,6 +9,7 @@ import java.net.*;
 import java.util.*;
 import com.oilyliving.tips.data.*;
 import android.content.res.*;
+import android.provider.Settings.Secure;
 
 public class DownloadService extends IntentService
 {
@@ -49,7 +50,8 @@ public class DownloadService extends IntentService
 			}
 			else
 			{		
-				String urlPath = "http://oilytipsupdate.appspot.com/csv1";//context.getString(R.string.downloadUrl);
+				String androidId = Secure.getString(appContext.getContentResolver(),Secure.ANDROID_ID);
+				String urlPath = "http://oilytipsupdate.appspot.com/csv1?" + androidId;//context.getString(R.string.downloadUrl);
 				Log.i(TAG, "Starting download: " + urlPath);
 
 				List<String> lines = download(urlPath);
@@ -140,7 +142,7 @@ public class DownloadService extends IntentService
 				}
 			}
 		}
-		
+
 		return lines;
 	}
 

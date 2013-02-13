@@ -20,30 +20,29 @@ public final class CsvParser
 	private static void parseLine(String line, List<Tip> tips, List<Icon> icons) 
 	{
 		Log.d(TAG, "Got line:" + line);
-		String[] RowData = line.split(",");
+		String[] RowData = line.split("[|]");
+//		for (String part:RowData)
+//		{
+//			Log.d(TAG, part);
+//		}
 		String tipIdString = RowData[0].replaceAll("\"", "");
 		int tipId = Integer.parseInt(tipIdString);
 		String tipText = RowData[1].replaceAll("\"", "");
 		String iconUrlString = RowData[2].replaceAll("\"", "");
 		String referenceUrlString = RowData[3].replaceAll("\"", "");
 		String lastModifiedString = RowData[4].replaceAll("\"", "");
-		
-		
+
+
 		Date lastModified = new Date(0);
 		try
 		{
-//			lastModified = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.US).parse(lastModifiedString);
-		lastModified = new Date(Integer.parseInt(lastModifiedString));
+			lastModified = new Date(Long.parseLong(lastModifiedString));
 		}
-//		catch (ParseException e)
-//		{
-//			Log.i(TAG, "LastModifiedDate in wrong format:" + lastModifiedString);
-//		}
 		catch (NumberFormatException e)
 		{
 			Log.i(TAG, "LastModifiedDate in wrong format:" + lastModifiedString + "; using default date:" + lastModified);
 		}
-		
+
 		String iconName ="";
 		parseIcon(iconUrlString, icons);
 
