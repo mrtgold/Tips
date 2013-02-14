@@ -61,13 +61,8 @@ public class DownloadService extends IntentService
 
 				CsvParser.Parse(lines, tips, icons);
 
-				updateTips(tips, appContext);
-
-				
-				for (Icon icon:icons)
-				{
-					Log.d(TAG, "Got icon:" + icon);
-				}
+				updateTips(tips, appContext);				
+				updateIcons(icons, appContext);
 
 
 				// Sucessful finished
@@ -82,6 +77,21 @@ public class DownloadService extends IntentService
 			e.printStackTrace();
 			Log.i(TAG, "Download failed - setting interval to " + failureTimeoutMsec + "msec");
 			alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + failureTimeoutMsec, pIntent); 
+		}
+	}
+
+	private void updateIcons(List<Icon> icons, Context appContext)
+	{
+		try
+		{
+			IconDbAdapter db;
+			db = new IconDbAdapter(appContext);
+			db.open();
+			db.tryUpdateIcons(icons);
+		}
+		catch (SQLiteException e)
+		{
+			e.printStackTrace();
 		}
 	}
 

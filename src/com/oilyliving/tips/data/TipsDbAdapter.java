@@ -81,7 +81,6 @@ public class TipsDbAdapter
             db.enableWriteAheadLogging();
         }
 
-
         @Override
         public void onCreate(SQLiteDatabase db)
 		{
