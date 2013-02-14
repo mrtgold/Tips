@@ -24,7 +24,7 @@ public class FullTipDialogActivity extends Activity
 		Tip tip = extras.getParcelable(WidgetProvider.EXTRA_TIP);				
 
 		TextView tipTextView = (TextView)findViewById(R.id.dialogTipText);
-		tipTextView.setText(tip.getTipText());
+		tipTextView.setText(tip.getTipTextAndId());
 
 		TextView link = (TextView)findViewById(R.id.dialogLink);
 		link.setMovementMethod(LinkMovementMethod.getInstance());

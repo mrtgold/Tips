@@ -46,12 +46,41 @@ public class TipsDbAdapter
         DBHelper = new DatabaseHelper(context);
     }
 
+	public void tryUpdateTips(List<Tip> tips)
+	{
+		
+		for (Tip downloadedTip : tips)
+		{
+			Log.d(TAG, "Try update tip:" + downloadedTip);
+
+			Tip tipFromDb = getTipById(downloadedTip.getTipId());
+			if (tipFromDb == null)
+			{
+				Log.d(TAG, "Tip does not exist, inserting");
+				insertTip(downloadedTip);
+			}
+			else if (tipFromDb.getLastModifiedDate().before(downloadedTip.getLastModifiedDate()))
+			{
+				Log.d(TAG, "Existing tip is older, updating");
+				Log.d(TAG, "from db:"+tipFromDb);
+				updateTip(downloadedTip);
+			}
+		}
+	}
+
     private static class DatabaseHelper extends SQLiteOpenHelper
 	{
         DatabaseHelper(Context context)
 		{
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
+
+		@Override
+		public void onConfigure(SQLiteDatabase db)
+		{
+            db.enableWriteAheadLogging();
+        }
+
 
         @Override
         public void onCreate(SQLiteDatabase db)
@@ -83,8 +112,11 @@ public class TipsDbAdapter
 
     public void deleteAll()
 	{
+		db.beginTransactionNonExclusive();
         long count = db.delete(DATABASE_TABLE, "1", null);
-        Log.w(TAG, "Deleted " + count + "rows from database");
+        db.endTransaction();
+		
+		Log.w(TAG, "Deleted " + count + "rows from database");
     }
 
     public long insertTip(Tip tip)
@@ -93,9 +125,29 @@ public class TipsDbAdapter
 		values.put(COL_TIP_ID, tip.getTipId());
         values.put(COL_TIP_TEXT, tip.getTipText());
         values.put(COL_ICON_NAME, tip.getIconName());
-		values.put(COL_REFERNCE, "");
+		values.put(COL_REFERNCE, tip.getReferenceUrl());
 		values.put(COL_LAST_MOD_MSEC_EOPOCH, tip.getLastModifiedDate().getTime());
-        return db.insert(DATABASE_TABLE, null, values);
+        
+		db.beginTransactionNonExclusive();
+		long insertedRowId = db.insert(DATABASE_TABLE, null, values);
+		db.endTransaction();
+		
+		return insertedRowId;
+    }
+
+    public long updateTip(Tip tip)
+	{
+        ContentValues values = new ContentValues();
+        values.put(COL_TIP_TEXT, tip.getTipText());
+        values.put(COL_ICON_NAME, tip.getIconName());
+		values.put(COL_REFERNCE, tip.getReferenceUrl());
+		values.put(COL_LAST_MOD_MSEC_EOPOCH, tip.getLastModifiedDate().getTime());
+        
+		db.beginTransactionNonExclusive();
+		int countUpdated= db.update(DATABASE_TABLE, values, COL_ROWID + "=?", new String[]{"" + tip.getTipId()});
+		db.endTransaction();
+		
+		return countUpdated;
     }
 
 	private Tip getTip(String whereClause, String orderBy)
@@ -105,8 +157,8 @@ public class TipsDbAdapter
 			COL_ROWID + ", " +
 			COL_TIP_ID + ", " +
 			COL_TIP_TEXT + "," +
-			COL_ICON_NAME +"," +
-			COL_REFERNCE +"," +
+			COL_ICON_NAME + "," +
+			COL_REFERNCE + "," +
 			COL_LAST_MOD_MSEC_EOPOCH +
 			" from "  + DATABASE_TABLE + " " +
 			whereClause +  " " +
@@ -117,19 +169,19 @@ public class TipsDbAdapter
         //TODO: this could be cleaned up
         if (cursor.moveToFirst())
 		{
-			int rowId = cursor.getInt(0);
+//			int rowId = cursor.getInt(0);
 			int tipId = cursor.getInt(1);
-            String tipText = cursor.getString(2) + " (Tip #" + rowId + ")";
+            String tipText = cursor.getString(2);// + " (Tip #" + rowId + ")";
             String iconName = cursor.getString(3);
 			String ref = cursor.getString(4);
 			long lastModMsecEpoch = cursor.getLong(5);
 			Date lastMod = new Date(lastModMsecEpoch);
-            return new Tip(tipId, tipText, iconName,ref,lastMod);
+            return new Tip(tipId, tipText, iconName, ref, lastMod);
         }
         return null;
     }
 
-	
+
     public int getCount()
 	{
         Cursor cursor = db.rawQuery(
@@ -150,16 +202,16 @@ public class TipsDbAdapter
     public Tip getTipById(int id)
 	{
 		String whereClause = " WHERE " + COL_TIP_ID + "=" + id;
-		return getTip(whereClause,"");
+		return getTip(whereClause, "");
 	}
 
 	public void InitTips(Context context)
 	{
 		this.deleteAll();
-		this.insertTip(new Tip(1, context.getString(R.string.tip1), "peppermint"));
-		this.insertTip(new Tip(2, context.getString(R.string.tip2), "ylIcon"));
+		this.insertTip(new Tip(2001, context.getString(R.string.tip1), "ylIcon"));
+		this.insertTip(new Tip(1, context.getString(R.string.tip2), "peppermint"));
 		this.insertTip(new Tip(3, context.getString(R.string.tip3), "rc"));
-		this.insertTip(new Tip(4, context.getString(R.string.tip4), "rc"));
+		this.insertTip(new Tip(1001, context.getString(R.string.tip4), "rc"));
 		this.insertTip(new Tip(5, context.getString(R.string.tip5), "ylIcon"));
 		this.insertTip(new Tip(6, context.getString(R.string.tip6), "thievesIcon"));
 		this.insertTip(new Tip(7, context.getString(R.string.tip7), "frankincense"));

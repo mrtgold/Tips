@@ -15,7 +15,6 @@ public class WidgetProvider extends AppWidgetProvider
 {
     private static final String TAG = "TipsWidget";
 	public static final String EXTRA_TIP = "com.oilyliving.tips.WidgetProvider.EXTRA_TIP";
-	public static final String EXTRA_TIP_TEXT = "com.oilyliving.tips.WidgetProvider.EXTRA_TIP_TEXT";
 
     private boolean firstTimeTips = true;
 	private boolean firstTimeImages = true;
@@ -24,7 +23,7 @@ public class WidgetProvider extends AppWidgetProvider
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 						 int[] appWidgetIds)
 	{
-		// Get all ids
+		// Get all widgets
 		ComponentName thisWidget = new ComponentName(context, WidgetProvider.class);
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
@@ -32,14 +31,14 @@ public class WidgetProvider extends AppWidgetProvider
 		{			
 			appWidgetManager.updateAppWidget(widgetId, buildUpdate(context, appWidgetIds));
 		}
-	
-		
+
+
 		Intent intent = new Intent(context, DownloadService.class);
 		Context appContext = context.getApplicationContext();			
 		PendingIntent pIntent = PendingIntent.getService(appContext, 0, intent, 0);
 		AlarmManager alarm = (AlarmManager)appContext.getSystemService(Context.ALARM_SERVICE);
 		Calendar cal = Calendar.getInstance();
-		
+
 		// Start now
 		alarm.set(AlarmManager.RTC, cal.getTimeInMillis(), pIntent); 
 	}
@@ -50,17 +49,17 @@ public class WidgetProvider extends AppWidgetProvider
 
 		RemoteViews remoteViews = setupRemoteViewWithTip(context, tip);
 
-		// Create an Intent to launch ExampleActivity 
+		// Create an Intent to launch FullTipDialogActivity
 		Intent intent = new Intent(context, FullTipDialogActivity.class); 
 		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		intent.putExtra(WidgetProvider.EXTRA_TIP, tip);
-		intent.putExtra(WidgetProvider.EXTRA_TIP_TEXT, tip.getTipText());
 
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		remoteViews.setOnClickPendingIntent(R.id.tipText, pendingIntent);
 		remoteViews.setOnClickPendingIntent(R.id.icon, pendingIntent);
 
+		// Create an Intent to update widget with next tip
 		Intent getNextIntent = new Intent(context, WidgetProvider.class);
 
 		getNextIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
@@ -77,16 +76,13 @@ public class WidgetProvider extends AppWidgetProvider
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 												  R.layout.widget_layout);
 
-		remoteViews.setTextViewText(R.id.tipText, tip.getTipText());
+		remoteViews.setTextViewText(R.id.tipText, tip.getTipTextAndId());
 
 
 		if (tip.getIcon() == null || tip.getIcon().getIconAsBitmap() == null)
 			remoteViews.setImageViewResource(R.id.icon, R.drawable.yllogo1);
 		else
-		{
-			Log.d(TAG, "Yea! this one has an icon!");
 			remoteViews.setImageViewBitmap(R.id.icon, tip.getIcon().getIconAsBitmap());
-		}
 
 		return remoteViews;
 	}
@@ -100,7 +96,7 @@ public class WidgetProvider extends AppWidgetProvider
 		Icon icon = getIconFromDb(context, tip);
 		tip.setIcon(icon);
 
-        Log.d(TAG, "got tip: " + tip);
+        Log.d(TAG, "Tip for widget: " + tip);
         return tip;
     }
 
@@ -109,7 +105,7 @@ public class WidgetProvider extends AppWidgetProvider
         IconDbAdapter db = InitIconsDb(context);
         Icon icon = db.getIconByName(tip.getIconName());
         db.close();
-        Log.d(TAG, "got icon: " + icon.getName());
+        Log.d(TAG, "Icon for tip #" + tip.getTipId() + ": " + icon.getName());
 
 		return icon;
 	}
@@ -137,11 +133,9 @@ public class WidgetProvider extends AppWidgetProvider
 
         if (firstTimeImages)
 		{
-            firstTimeImages= false;
+            firstTimeImages = false;
             db.InitIcons(context);
         }
         return db;
     }
-
-
 } 

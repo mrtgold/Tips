@@ -2,14 +2,15 @@ package com.oilyliving.tips;
 
 import android.app.*;
 import android.content.*;
+import android.content.res.*;
+import android.database.sqlite.*;
 import android.net.*;
+import android.provider.Settings.*;
 import android.util.*;
+import com.oilyliving.tips.data.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import com.oilyliving.tips.data.*;
-import android.content.res.*;
-import android.provider.Settings.Secure;
 
 public class DownloadService extends IntentService
 {
@@ -60,11 +61,9 @@ public class DownloadService extends IntentService
 
 				CsvParser.Parse(lines, tips, icons);
 
-				for (Tip tip:tips)
-				{
-					Log.d(TAG, "Got tip:" + tip);
-				}
+				updateTips(tips, appContext);
 
+				
 				for (Icon icon:icons)
 				{
 					Log.d(TAG, "Got icon:" + icon);
@@ -83,8 +82,21 @@ public class DownloadService extends IntentService
 			e.printStackTrace();
 			Log.i(TAG, "Download failed - setting interval to " + failureTimeoutMsec + "msec");
 			alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + failureTimeoutMsec, pIntent); 
+		}
+	}
 
-
+	private void updateTips(List<Tip> tips, Context appContext)// throws SQLiteException
+	{
+		try
+		{
+			TipsDbAdapter db;
+			db = new TipsDbAdapter(appContext);
+			db.open();
+			db.tryUpdateTips(tips);
+		}
+		catch (SQLiteException e)
+		{
+			e.printStackTrace();
 		}
 	}
 

@@ -49,7 +49,12 @@ public class Tip implements Parcelable
         this.iconName = icon.getName();
 		this.reference = "";
 		this.lastModified = new Date(0);
-		}
+	}
+
+	public String getTipTextAndId()
+	{
+		return getTipText() + " (Tip #" + getTipId() + ")";
+	}
 
 	public int getTipId()
 	{
@@ -70,11 +75,16 @@ public class Tip implements Parcelable
 		return this.lastModified;
 	}
 
+	public String getReferenceUrl()
+	{
+		return this.reference;
+	}
+
     public Icon getIcon()
 	{
         return this.icon;
     }
-	
+
 	public void setIcon(Icon icon)
 	{
 		this.icon = icon;
@@ -92,30 +102,30 @@ public class Tip implements Parcelable
 
 	public void writeToParcel(Parcel out, int flags)
 	{
-		Log.d(TAG, "writing to parcel:"+tipText);
+		Log.d(TAG, "writing to parcel:" + tipText);
 		out.writeInt(tipId);
 		out.writeString(tipText);
 		out.writeString(iconName);
 		out.writeString(reference);
 		out.writeLong(lastModified.getTime());
 		icon.writeToParcel(out, 0);		
-		Log.d(TAG, "parcel.dataSize:"+out.dataSize());		
+		Log.d(TAG, "parcel.dataSize:" + out.dataSize());		
 	}
-	
+
 
 	private Tip(Parcel in)
 	{ 
 		Log.d(TAG, "Reading from parcel");
 		tipId = in.readInt();
 		tipText = in.readString();
-		iconName= in.readString();
+		iconName = in.readString();
 		reference = in.readString();
 		lastModified = new Date(in.readLong());
 		icon = Icon.CREATOR.createFromParcel(in);
 
 		Log.d(TAG, "tipText=" + tipText);		
 	}
-	
+
 	public static final Parcelable.Creator<Tip> CREATOR = new Parcelable.Creator<Tip>() 
 	{ 
 		public Tip createFromParcel(Parcel in) 
