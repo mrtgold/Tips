@@ -32,7 +32,12 @@ public class WidgetProvider extends AppWidgetProvider
 			appWidgetManager.updateAppWidget(widgetId, buildUpdate(context, appWidgetIds));
 		}
 
+		launchDownloadService(context); 
+	
+	}
 
+	private void launchDownloadService(Context context)
+	{
 		Intent intent = new Intent(context, DownloadService.class);
 		Context appContext = context.getApplicationContext();			
 		PendingIntent pIntent = PendingIntent.getService(appContext, 0, intent, 0);
@@ -40,9 +45,10 @@ public class WidgetProvider extends AppWidgetProvider
 		Calendar cal = Calendar.getInstance();
 
 		// Start now
-		alarm.set(AlarmManager.RTC, cal.getTimeInMillis(), pIntent); 
+		alarm.set(AlarmManager.RTC, cal.getTimeInMillis(), pIntent);
 	}
 
+	
 	private RemoteViews buildUpdate(Context context, int[] appWidgetIds)
 	{
 		Tip tip = getTipFromDb(context);
@@ -65,16 +71,14 @@ public class WidgetProvider extends AppWidgetProvider
 		getNextIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 		getNextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
 
-		PendingIntent getNextPI = PendingIntent.getBroadcast(context,
-															 0, getNextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent getNextPI = PendingIntent.getBroadcast(context, 0, getNextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		remoteViews.setOnClickPendingIntent(R.id.next, getNextPI);
 		return remoteViews;
 	}	
 
 	private RemoteViews setupRemoteViewWithTip(Context context, Tip tip)
 	{
-		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-												  R.layout.widget_layout);
+		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
 		remoteViews.setTextViewText(R.id.tipText, tip.getTipTextAndId());
 
@@ -103,7 +107,8 @@ public class WidgetProvider extends AppWidgetProvider
     private Icon getIconFromDb(Context context, Tip tip)
 	{
         IconDbAdapter db = InitIconsDb(context);
-        Icon icon = db.getIconByName(tip.getIconName());
+        String iconName = tip.getIconName();
+		Icon icon = db.getIconByName(iconName);
         db.close();
         Log.d(TAG, "Icon for tip #" + tip.getTipId() + ": " + icon.getName());
 

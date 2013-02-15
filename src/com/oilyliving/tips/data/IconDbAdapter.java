@@ -44,15 +44,15 @@ public class IconDbAdapter
 	COL_TAGS_STRING +
 	" from " + DATABASE_TABLE;
 
-    private final Context context;
+    private final Context appContext;
 
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
 
     public IconDbAdapter(Context ctx)
 	{
-        this.context = ctx;
-        DBHelper = new DatabaseHelper(context);
+        appContext = ctx.getApplicationContext();
+        DBHelper = new DatabaseHelper(appContext);
     }
 
 	public void tryUpdateIcons(List<Icon> icons)
@@ -122,6 +122,7 @@ public class IconDbAdapter
 	{
 		db.beginTransactionNonExclusive();
         long count = db.delete(DATABASE_TABLE, "1", null);
+		db.setTransactionSuccessful();
 		db.endTransaction();
         Log.w(TAG, "Deleted " + count + "rows from " + DATABASE_TABLE);
     }
@@ -136,6 +137,7 @@ public class IconDbAdapter
 
 		db.beginTransactionNonExclusive();
 		long insertedRowId = db.insert(DATABASE_TABLE, null, values);
+		db.setTransactionSuccessful();
 		db.endTransaction();
 
 		return insertedRowId;
@@ -201,7 +203,8 @@ public class IconDbAdapter
 
 	public void InitIcons(Context context)
 	{
-		this.deleteAll();
+		db.beginTransaction();
+		deleteAll();
 
 		Bitmap ylIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.yllogo1);
 		Bitmap thievesIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves1);
@@ -211,14 +214,17 @@ public class IconDbAdapter
 		Bitmap thievesSpray = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves_spray);
 		Bitmap peppermint = BitmapFactory.decodeResource(context.getResources(), R.drawable.peppermint);
 		Bitmap rc = BitmapFactory.decodeResource(context.getResources(), R.drawable.rc);
-		this.insertIcon(new Icon("peppermint", peppermint));
-		this.insertIcon(new Icon("ylIcon", ylIcon));
-		this.insertIcon(new Icon("rc", rc));
-		this.insertIcon(new Icon("thievesIcon", thievesIcon));
-		this.insertIcon(new Icon("frankincense", frankincense));
-		this.insertIcon(new Icon("lavenderIcon", lavenderIcon));
-		this.insertIcon(new Icon("kidScentsIcon", kidScentsIcon));
-		this.insertIcon(new Icon("thievesSpray", thievesSpray));
+		insertIcon(new Icon("peppermint", peppermint));
+		insertIcon(new Icon("ylIcon", ylIcon));
+		insertIcon(new Icon("rc", rc));
+		insertIcon(new Icon("thievesIcon", thievesIcon));
+		insertIcon(new Icon("frankincense", frankincense));
+		insertIcon(new Icon("lavenderIcon", lavenderIcon));
+		insertIcon(new Icon("kidScentsIcon", kidScentsIcon));
+		insertIcon(new Icon("thievesSpray", thievesSpray));
+
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 
 

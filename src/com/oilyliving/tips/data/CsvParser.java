@@ -56,10 +56,11 @@ public final class CsvParser
 	{
 		String iconName = "";
 		String[] split = iconUrlString.split("/");
-		for (String part : split)
-		{
-			Log.d(TAG, part);
-		}
+//		for (String part : split)
+//		{
+//			Log.d(TAG, part);
+//		}
+
 		iconName = split[split.length - 1];
 
 		try

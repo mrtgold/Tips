@@ -88,6 +88,7 @@ public class DownloadService extends IntentService
 			db = new IconDbAdapter(appContext);
 			db.open();
 			db.tryUpdateIcons(icons);
+			db.close();
 		}
 		catch (SQLiteException e)
 		{
@@ -103,6 +104,7 @@ public class DownloadService extends IntentService
 			db = new TipsDbAdapter(appContext);
 			db.open();
 			db.tryUpdateTips(tips);
+			db.close();
 		}
 		catch (SQLiteException e)
 		{

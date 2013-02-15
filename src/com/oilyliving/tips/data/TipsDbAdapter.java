@@ -35,20 +35,20 @@ public class TipsDbAdapter
 	COL_LAST_MOD_MSEC_EOPOCH + " long null " +
 	" );";
 
-    private final Context context;
+    private final Context appContext;
 
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
 
 	public TipsDbAdapter(Context ctx)
 	{
-        this.context = ctx;
-        DBHelper = new DatabaseHelper(context);
+        appContext = ctx.getApplicationContext();
+        DBHelper = new DatabaseHelper(appContext);
     }
 
 	public void tryUpdateTips(List<Tip> tips)
 	{
-		
+
 		for (Tip downloadedTip : tips)
 		{
 			Log.d(TAG, "Try update tip:" + downloadedTip);
@@ -62,8 +62,10 @@ public class TipsDbAdapter
 			else if (tipFromDb.getLastModifiedDate().before(downloadedTip.getLastModifiedDate()))
 			{
 				Log.d(TAG, "Existing tip is older, updating");
-				Log.d(TAG, "from db:"+tipFromDb);
+				Log.d(TAG, "from db:" + tipFromDb);
 				updateTip(downloadedTip);
+				Tip confirm = getTipById(downloadedTip.getTipId());
+				Log.d(TAG, "confirm updated:" + confirm);
 			}
 		}
 	}
@@ -111,10 +113,11 @@ public class TipsDbAdapter
 
     public void deleteAll()
 	{
-		db.beginTransactionNonExclusive();
+		db.beginTransaction();
         long count = db.delete(DATABASE_TABLE, "1", null);
-        db.endTransaction();
-		
+        db.setTransactionSuccessful();
+		db.endTransaction();
+
 		Log.w(TAG, "Deleted " + count + "rows from database");
     }
 
@@ -126,11 +129,12 @@ public class TipsDbAdapter
         values.put(COL_ICON_NAME, tip.getIconName());
 		values.put(COL_REFERNCE, tip.getReferenceUrl());
 		values.put(COL_LAST_MOD_MSEC_EOPOCH, tip.getLastModifiedDate().getTime());
-        
+
 		db.beginTransactionNonExclusive();
 		long insertedRowId = db.insert(DATABASE_TABLE, null, values);
+		db.setTransactionSuccessful();
 		db.endTransaction();
-		
+
 		return insertedRowId;
     }
 
@@ -141,11 +145,13 @@ public class TipsDbAdapter
         values.put(COL_ICON_NAME, tip.getIconName());
 		values.put(COL_REFERNCE, tip.getReferenceUrl());
 		values.put(COL_LAST_MOD_MSEC_EOPOCH, tip.getLastModifiedDate().getTime());
-        
+
 		db.beginTransactionNonExclusive();
-		int countUpdated= db.update(DATABASE_TABLE, values, COL_ROWID + "=?", new String[]{"" + tip.getTipId()});
+		int countUpdated= db.update(DATABASE_TABLE, values, COL_TIP_ID + "=?", new String[]{"" + tip.getTipId()});
+		Log.d(TAG, "numRowsUpdated:" + countUpdated);
+		db.setTransactionSuccessful();
 		db.endTransaction();
-		
+
 		return countUpdated;
     }
 
@@ -206,17 +212,20 @@ public class TipsDbAdapter
 
 	public void InitTips(Context context)
 	{
-		this.deleteAll();
-		this.insertTip(new Tip(2001, context.getString(R.string.tip1), "ylIcon"));
-		this.insertTip(new Tip(1, context.getString(R.string.tip2), "peppermint"));
-		this.insertTip(new Tip(3, context.getString(R.string.tip3), "rc"));
-		this.insertTip(new Tip(1001, context.getString(R.string.tip4), "rc"));
-		this.insertTip(new Tip(5, context.getString(R.string.tip5), "ylIcon"));
-		this.insertTip(new Tip(6, context.getString(R.string.tip6), "thievesIcon"));
-		this.insertTip(new Tip(7, context.getString(R.string.tip7), "frankincense"));
-		this.insertTip(new Tip(8, context.getString(R.string.tip8), "lavenderIcon"));
-		this.insertTip(new Tip(9, context.getString(R.string.tip9), "kidScentsIcon"));
-		this.insertTip(new Tip(10, context.getString(R.string.tip10), "thievesSpray"));
+		db.beginTransaction();
+		deleteAll();
+		insertTip(new Tip(2001, context.getString(R.string.tip1), "ylIcon"));
+		insertTip(new Tip(1, context.getString(R.string.tip2), "peppermint"));
+		insertTip(new Tip(3, context.getString(R.string.tip3), "rc"));
+		insertTip(new Tip(1001, context.getString(R.string.tip4), "rc"));
+		insertTip(new Tip(5, context.getString(R.string.tip5), "ylIcon"));
+		insertTip(new Tip(6, context.getString(R.string.tip6), "thievesIcon"));
+		insertTip(new Tip(7, context.getString(R.string.tip7), "frankincense"));
+		insertTip(new Tip(8, context.getString(R.string.tip8), "lavenderIcon"));
+		insertTip(new Tip(9, context.getString(R.string.tip9), "kidScentsIcon"));
+		insertTip(new Tip(10, context.getString(R.string.tip10), "thievesSpray"));
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 
 }
