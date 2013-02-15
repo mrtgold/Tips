@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="DownloadSuccessIntervalMin">240</integer>
-    <integer name="DownloadFailureIntervalMin">1</integer>
+    <integer name="DownloadSuccessIntervalMin">360</integer>
+    <integer name="DownloadFailureIntervalMin">10</integer>
+    <integer name="WidgetUpdateIntervalMsec">86400000</integer>
 </resources>
