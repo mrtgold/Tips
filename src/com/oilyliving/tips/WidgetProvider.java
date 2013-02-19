@@ -33,22 +33,35 @@ public class WidgetProvider extends AppWidgetProvider
 		}
 
 		launchDownloadService(context); 
-	
+
 	}
 
 	private void launchDownloadService(Context context)
 	{
+
 		Intent intent = new Intent(context, DownloadService.class);
 		Context appContext = context.getApplicationContext();			
 		PendingIntent pIntent = PendingIntent.getService(appContext, 0, intent, 0);
 		AlarmManager alarm = (AlarmManager)appContext.getSystemService(Context.ALARM_SERVICE);
 		Calendar cal = Calendar.getInstance();
 
-		// Start now
-		alarm.set(AlarmManager.RTC, cal.getTimeInMillis(), pIntent);
+
+		//CHECKING IF PENDING INTENT IS ALREADY RUNNING
+		//Intent checkIntent = new Intent(getApplicationContext(),MyScheduledReceiver.class);
+		boolean pendingIntentExists = (PendingIntent.getBroadcast(appContext, 0, intent, PendingIntent.FLAG_NO_CREATE) != null);
+		if (pendingIntentExists)
+		{
+			Log.d(TAG,"DownloadService already running - don't start again");
+		}
+		else
+		{
+			Log.d(TAG,"DownloadService not running - start in 1 min");
+			// Start now
+			alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + 60000, pIntent);
+		}
 	}
 
-	
+
 	private RemoteViews buildUpdate(Context context, int[] appWidgetIds)
 	{
 		Tip tip = getTipFromDb(context);

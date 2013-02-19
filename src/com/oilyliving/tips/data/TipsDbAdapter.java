@@ -80,7 +80,7 @@ public class TipsDbAdapter
 		@Override
 		public void onConfigure(SQLiteDatabase db)
 		{
-            db.enableWriteAheadLogging();
+			//API level 11:db.enableWriteAheadLogging();
         }
 
         @Override
@@ -130,7 +130,8 @@ public class TipsDbAdapter
 		values.put(COL_REFERNCE, tip.getReferenceUrl());
 		values.put(COL_LAST_MOD_MSEC_EOPOCH, tip.getLastModifiedDate().getTime());
 
-		db.beginTransactionNonExclusive();
+		//API level 11:db.beginTransactionNonExclusive();
+        db.beginTransaction();
 		long insertedRowId = db.insert(DATABASE_TABLE, null, values);
 		db.setTransactionSuccessful();
 		db.endTransaction();
@@ -146,7 +147,8 @@ public class TipsDbAdapter
 		values.put(COL_REFERNCE, tip.getReferenceUrl());
 		values.put(COL_LAST_MOD_MSEC_EOPOCH, tip.getLastModifiedDate().getTime());
 
-		db.beginTransactionNonExclusive();
+		//API level 11:db.beginTransactionNonExclusive();
+        db.beginTransaction();
 		int countUpdated= db.update(DATABASE_TABLE, values, COL_TIP_ID + "=?", new String[]{"" + tip.getTipId()});
 		Log.d(TAG, "numRowsUpdated:" + countUpdated);
 		db.setTransactionSuccessful();

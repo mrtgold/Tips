@@ -87,7 +87,7 @@ public class IconDbAdapter
 		@Override
 		public void onConfigure(SQLiteDatabase db)
 		{
-            db.enableWriteAheadLogging();
+           //API level 11: db.enableWriteAheadLogging();
         }
 
         @Override
@@ -120,8 +120,9 @@ public class IconDbAdapter
 
     public void deleteAll()
 	{
-		db.beginTransactionNonExclusive();
-        long count = db.delete(DATABASE_TABLE, "1", null);
+		//API level 11:db.beginTransactionNonExclusive();
+        db.beginTransaction();
+		long count = db.delete(DATABASE_TABLE, "1", null);
 		db.setTransactionSuccessful();
 		db.endTransaction();
         Log.w(TAG, "Deleted " + count + "rows from " + DATABASE_TABLE);
@@ -135,7 +136,8 @@ public class IconDbAdapter
         values.put(COL_BITMAP_BYTES, icon.getIconAsBytes());
 //      values.put(KEY_TAGS_STRING, icon.getTagsString());
 
-		db.beginTransactionNonExclusive();
+		//API level 11:db.beginTransactionNonExclusive();
+        db.beginTransaction();
 		long insertedRowId = db.insert(DATABASE_TABLE, null, values);
 		db.setTransactionSuccessful();
 		db.endTransaction();
