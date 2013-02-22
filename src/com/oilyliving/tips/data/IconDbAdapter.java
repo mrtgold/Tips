@@ -158,8 +158,7 @@ public class IconDbAdapter
 
     public Icon getBestIcon(String name, String tagsString)
 	{
-        Icon icon = getIconByName(name);
-        return icon;
+        return getIconByName(name);
 	}
 
     public Icon getIconByName(String name)
