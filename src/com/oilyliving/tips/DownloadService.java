@@ -27,9 +27,6 @@ public class DownloadService extends IntentService
 	@Override
 	protected void onHandleIntent(Intent intent)
 	{
-//		Uri data = intent.getData();
-//		String urlPath = intent.getStringExtra("urlpath");
-
 		Context appContext = getApplicationContext();			
 		PendingIntent pIntent = PendingIntent.getService(appContext, 0, intent, 0);
 		AlarmManager alarm = (AlarmManager)appContext.getSystemService(Context.ALARM_SERVICE);
@@ -39,48 +36,58 @@ public class DownloadService extends IntentService
 		Resources resources = appContext.getResources();
 		int successTimeoutMsec = resources.getInteger(R.integer.DownloadSuccessIntervalMin) * 60 * 1000;  //30 * 1000; //AlarmManager.INTERVAL_HALF_DAY;
 		int failureTimeoutMsec = resources.getInteger(R.integer.DownloadFailureIntervalMin) * 60 * 1000;  //35 * 1000;  //AlarmManager.INTERVAL_HALF_HOUR;
+		boolean success = false;
+
 		try
 		{
-			Log.i(TAG, "Checking internet access");
-			if (!isOnline())
+			success = downloadAndImport(appContext, success);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if (success)
 			{
-				Log.i(TAG, "Not online");//, will try again in " + failureTimeoutMsec / 1000 + " sec");
-				Log.i(TAG, "Download failed - setting interval to " + failureTimeoutMsec + "msec");
-				alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + failureTimeoutMsec, pIntent); 
-				result = Activity.RESULT_OK;
-			}
-			else
-			{		
-				String androidId = Secure.getString(appContext.getContentResolver(),Secure.ANDROID_ID);
-				String urlPath = "http://oilytipsupdate.appspot.com/csv1?" + androidId;//context.getString(R.string.downloadUrl);
-				Log.i(TAG, "Starting download: " + urlPath);
-
-				List<String> lines = download(urlPath);
-				List<Tip> tips = new ArrayList<Tip>();
-				List<Icon> icons = new ArrayList<Icon>();
-
-				CsvParser.Parse(lines, tips, icons);
-
-				updateTips(tips, appContext);				
-				updateIcons(icons, appContext);
-
-
-				// Sucessful finished
 				result = Activity.RESULT_OK;
 
 				Log.i(TAG, "Download succeeded - setting interval to " + successTimeoutMsec + "msec");
 				alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + successTimeoutMsec, pIntent); 
 			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			Log.i(TAG, "Download failed - setting interval to " + failureTimeoutMsec + "msec");
-			alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + failureTimeoutMsec, pIntent); 
+			else
+			{
+				Log.i(TAG, "Download failed - setting interval to " + failureTimeoutMsec + "msec");
+				alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + failureTimeoutMsec, pIntent); 
+			}
 		}
 	}
 
-	private void updateIcons(List<Icon> icons, Context appContext)
+	private boolean downloadAndImport(Context appContext, boolean success)
+	{
+		Log.i(TAG, "Checking internet access");
+
+//		if (!isOnline()) return false;
+
+		String androidId = Secure.getString(appContext.getContentResolver(), Secure.ANDROID_ID);
+		String urlPath = "http://oilytipsupdate.appspot.com/csv1?" + androidId;//context.getString(R.string.downloadUrl);
+		Log.i(TAG, "Starting download: " + urlPath);
+
+		List<String> lines = new ArrayList<String>();
+		if (!download(urlPath, lines)) return false;
+
+		List<Tip> tips = new ArrayList<Tip>();
+		List<Icon> icons = new ArrayList<Icon>();
+
+		if (!CsvParser.Parse(lines, tips, icons)) return false;
+
+		if (!updateTips(tips, appContext)) return false;				
+		if (!updateIcons(icons, appContext)) return false;
+
+		return true;
+	}
+
+	private boolean updateIcons(List<Icon> icons, Context appContext)
 	{
 		try
 		{
@@ -93,10 +100,12 @@ public class DownloadService extends IntentService
 		catch (SQLiteException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
-	private void updateTips(List<Tip> tips, Context appContext)// throws SQLiteException
+	private boolean updateTips(List<Tip> tips, Context appContext)// throws SQLiteException
 	{
 		try
 		{
@@ -109,13 +118,15 @@ public class DownloadService extends IntentService
 		catch (SQLiteException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 
-	private List<String> download(String urlPath)
+	private boolean download(String urlPath, List<String> lines)
 	{	
-		List<String> lines = new ArrayList<String>();
+		boolean success = false;
 		InputStream stream = null;
 		try
 		{
@@ -129,7 +140,9 @@ public class DownloadService extends IntentService
 				while ((line = reader.readLine()) != null)
 				{
 					lines.add(line);
+					Log.d(TAG, "added line: " + line);
 				}
+				success = true;
 			}
 			catch (IOException ex)
 			{
@@ -147,6 +160,10 @@ public class DownloadService extends IntentService
 				}
 			}
 
+		}
+		catch (UnknownHostException ex)
+		{	
+			Log.i(TAG, "Can't connect; will try again later");
 		}
 		catch (Exception e)
 		{
@@ -167,14 +184,23 @@ public class DownloadService extends IntentService
 			}
 		}
 
-		return lines;
+		return success;
 	}
 
 	public boolean isOnline()
 	{
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		return (netInfo != null && netInfo.isConnected());
+		boolean oneIsConnected = false;
+		for (NetworkInfo info :cm.getAllNetworkInfo())
+		{
+			Log.d(TAG, info.toString() + " is active:" + info.isConnected());
+			if (info.isConnected())
+				oneIsConnected = true;
+		}
+//		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+//		return (netInfo != null && netInfo.isConnected());
+
+		return oneIsConnected;
 	}
 
 

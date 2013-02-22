@@ -171,7 +171,7 @@ public class TipsDbAdapter
 			whereClause +  " " +
 			orderBy +  " " +
 			" LIMIT 1";
-
+		Tip tip = null;
 		Cursor cursor = db.rawQuery(select, null);
         //TODO: this could be cleaned up
         if (cursor.moveToFirst())
@@ -183,9 +183,10 @@ public class TipsDbAdapter
 			String ref = cursor.getString(4);
 			long lastModMsecEpoch = cursor.getLong(5);
 			Date lastMod = new Date(lastModMsecEpoch);
-            return new Tip(tipId, tipText, iconName, ref, lastMod);
-        }
-        return null;
+            tip = new Tip(tipId, tipText, iconName, ref, lastMod);
+		}
+		cursor.close();
+        return tip;
     }
 
 
@@ -196,6 +197,7 @@ public class TipsDbAdapter
 
         cursor.moveToFirst();
         int tipCount = cursor.getInt(0);
+		cursor.close();
         Log.d(TAG, "getCount=" + tipCount);
         return tipCount;
     }

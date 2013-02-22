@@ -31,6 +31,16 @@ public class FullTipDialogActivity extends Activity
 
 		ImageView iconView = (ImageView)findViewById(R.id.dialogIcon);
 		iconView.setImageBitmap(tip.getIcon().getIconAsBitmap());
+
+		String referenceUrl = tip.getReferenceUrl();
+		if (referenceUrl != null && referenceUrl != "")
+		{
+			TextView ref = (TextView)findViewById(R.id.references);
+			String refLink = "<a href=\"" + referenceUrl + "\">[1]</a>";
+			ref.setText(refLink);
+			ref.setMovementMethod(LinkMovementMethod.getInstance());
+		}			
+
 	}
 }
 	
