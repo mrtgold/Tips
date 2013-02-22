@@ -84,11 +84,11 @@ public class IconDbAdapter
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
-		@Override
-		public void onConfigure(SQLiteDatabase db)
-		{
-           //API level 11: db.enableWriteAheadLogging();
-        }
+//		@Override
+//		public void onConfigure(SQLiteDatabase db)
+//		{
+//           //API level 11: db.enableWriteAheadLogging();
+//        }
 
         @Override
         public void onCreate(SQLiteDatabase db)

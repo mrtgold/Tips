@@ -78,15 +78,17 @@ public class WidgetProvider extends AppWidgetProvider
 		remoteViews.setOnClickPendingIntent(R.id.tipText, pendingIntent);
 		remoteViews.setOnClickPendingIntent(R.id.icon, pendingIntent);
 
-		// Create an Intent to update widget with next tip
-		Intent getNextIntent = new Intent(context, WidgetProvider.class);
+        /*
+        // Create an Intent to update widget with next tip
+        Intent getNextIntent = new Intent(context, WidgetProvider.class);
 
-		getNextIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		getNextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+        getNextIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        getNextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
 
-		PendingIntent getNextPI = PendingIntent.getBroadcast(context, 0, getNextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		remoteViews.setOnClickPendingIntent(R.id.next, getNextPI);
-		return remoteViews;
+        PendingIntent getNextPI = PendingIntent.getBroadcast(context, 0, getNextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.next, getNextPI);
+        */
+        return remoteViews;
 	}	
 
 	private RemoteViews setupRemoteViewWithTip(Context context, Tip tip)

@@ -1,12 +1,16 @@
 package com.oilyliving.tips.data;
 
-import android.content.*;
-import android.database.*;
-import android.database.sqlite.*;
-import android.graphics.*;
-import android.util.*;
-import com.oilyliving.tips.*;
-import java.util.*;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import com.oilyliving.tips.R;
+
+import java.util.Date;
+import java.util.List;
 
 public class TipsDbAdapter
 {     
@@ -77,11 +81,11 @@ public class TipsDbAdapter
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
-		@Override
-		public void onConfigure(SQLiteDatabase db)
-		{
-			//API level 11:db.enableWriteAheadLogging();
-        }
+//		@Override
+//		public void onConfigure(SQLiteDatabase db)
+//		{
+//			//API level 11:db.enableWriteAheadLogging();
+//        }
 
         @Override
         public void onCreate(SQLiteDatabase db)
@@ -219,7 +223,7 @@ public class TipsDbAdapter
 		insertTip(new Tip(2001, context.getString(R.string.tip1), "ylIcon"));
 		insertTip(new Tip(1, context.getString(R.string.tip2), "peppermint"));
 		insertTip(new Tip(3, context.getString(R.string.tip3), "rc"));
-		insertTip(new Tip(1001, context.getString(R.string.tip4), "rc"));
+		insertTip(new Tip(1001, context.getString(R.string.tip4), "rc","http://onlinelibrary.wiley.com/doi/10.1002/ffj.1904/abstract",new Date(0)));
 		insertTip(new Tip(5, context.getString(R.string.tip5), "ylIcon"));
 		insertTip(new Tip(6, context.getString(R.string.tip6), "thievesIcon"));
 		insertTip(new Tip(7, context.getString(R.string.tip7), "frankincense"));
