@@ -30,24 +30,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c58dfe3-fcdc-4b7a-a9ba-2c11f5e7a8c6" name="Default" comment="add next button&#10;add app icon&#10;reformat code">
-      <change type="DELETED" beforePath="C:\Users\Tim\Documents\Code\Tips\res\drawable-hdpi\app_icon.ico" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Tim\Documents\Code\Tips\res\drawable-ldpi\app_icon.ico" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Tim\Documents\Code\Tips\res\drawable-mdpi\app_icon.ico" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Tim\Documents\Code\Tips\res\drawable\app_icon.jpeg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Screenshot/Expanded.PNG" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Screenshot/Expanded_320x480.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Screenshot/Widget.PNG" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Screenshot/Widget_320x480.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/ic_launcher.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable-xxhdpi/ic_launcher.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Screenshot/web_hi_res_512.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/oilyliving/tips/data/IconDbAdapter.java" afterPath="$PROJECT_DIR$/src/com/oilyliving/tips/data/IconDbAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/oilyliving/tips/data/TipsDbAdapter.java" afterPath="$PROJECT_DIR$/src/com/oilyliving/tips/data/TipsDbAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/oilyliving/tips/WidgetProvider.java" afterPath="$PROJECT_DIR$/src/com/oilyliving/tips/WidgetProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/widget_layout.xml" afterPath="$PROJECT_DIR$/res/layout/widget_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Tips.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="0c58dfe3-fcdc-4b7a-a9ba-2c11f5e7a8c6" time="1361536820085" ignored="false" />
+    <file path="/Dummy.txt" changelist="0c58dfe3-fcdc-4b7a-a9ba-2c11f5e7a8c6" time="1361537713753" ignored="false" />
     <file path="/strings.xml" changelist="0c58dfe3-fcdc-4b7a-a9ba-2c11f5e7a8c6" time="1361506698146" ignored="false" />
     <file path="/fragment.java" changelist="0c58dfe3-fcdc-4b7a-a9ba-2c11f5e7a8c6" time="1361451125787" ignored="false" />
     <file path="/widget_layout.xml" changelist="0c58dfe3-fcdc-4b7a-a9ba-2c11f5e7a8c6" time="1361532673701" ignored="false" />
@@ -145,10 +143,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IconDbAdapter.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="IconDbAdapter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/data/IconDbAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="11" selection-start="2432" selection-end="2557" vertical-scroll-proportion="4.056818">
+            <state line="201" column="0" selection-start="5445" selection-end="5445" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -166,7 +164,7 @@
       <file leaf-file-name="TipsDbAdapter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/data/TipsDbAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="221" column="145" selection-start="6497" selection-end="6497" vertical-scroll-proportion="0.0">
+            <state line="228" column="0" selection-start="6941" selection-end="6941" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -181,10 +179,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WidgetProvider.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="WidgetProvider.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/WidgetProvider.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="88" column="0" selection-start="2602" selection-end="3064" vertical-scroll-proportion="0.0">
+            <state line="156" column="103" selection-start="4747" selection-end="4757" vertical-scroll-proportion="3.9886363">
               <folding />
             </state>
           </provider>
@@ -259,10 +257,10 @@
         <option value="$PROJECT_DIR$/src/com/oilyliving/tips/data/IconDbAdapter.java" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/src/com/oilyliving/tips/data/TipsDbAdapter.java" />
         <option value="$PROJECT_DIR$/src/com/oilyliving/tips/WidgetProvider.java" />
         <option value="$PROJECT_DIR$/res/layout/widget_layout.xml" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/com/oilyliving/tips/data/TipsDbAdapter.java" />
       </list>
     </option>
   </component>
@@ -587,7 +585,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39934534" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32733223" sideWeight="0.33004925" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32750398" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32733223" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32569557" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3747954" sideWeight="0.6642036" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -640,7 +638,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="add app icon" />
+    <option name="LAST_COMMIT_MESSAGE" value="add next button&#10;add app icon&#10;reformat code" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -654,8 +652,8 @@
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="reformat" />
-    <MESSAGE value="add next button&#10;add app icon&#10;reformat code" />
     <MESSAGE value="add app icon" />
+    <MESSAGE value="add next button&#10;add app icon&#10;reformat code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -724,13 +722,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/data/TipsDbAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="221" column="145" selection-start="6497" selection-end="6497" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/FullTipDialogActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="16" column="46" selection-start="382" selection-end="382" vertical-scroll-proportion="0.0">
@@ -762,16 +753,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/WidgetProvider.java">
+    <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/data/IconDbAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="0" selection-start="2602" selection-end="3064" vertical-scroll-proportion="0.0">
+        <state line="201" column="0" selection-start="5445" selection-end="5445" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/data/IconDbAdapter.java">
+    <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/data/TipsDbAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="11" selection-start="2432" selection-end="2557" vertical-scroll-proportion="4.056818">
+        <state line="228" column="0" selection-start="6941" selection-end="6941" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/oilyliving/tips/WidgetProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="156" column="103" selection-start="4747" selection-end="4757" vertical-scroll-proportion="3.9886363">
           <folding />
         </state>
       </provider>
