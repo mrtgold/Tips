@@ -4,16 +4,29 @@ import android.util.*;
 import java.net.*;
 import java.util.*;
 import java.text.*;
+import android.webkit.*;
 
 public final class CsvParser
 {
 	private static final String TAG = "CsvParser";
-	public static void Parse(List<String> lines, List<Tip> tips, List<Icon> icons)
+	public static boolean Parse(List<String> lines, List<Tip> tips, List<Icon> icons)
 	{
+		if (lines == null)
+		{
+			Log.d(TAG, "No lines given (null)");
+			return false;
+		}
+		if (lines.size() == 0)
+		{
+			Log.d(TAG, "No lines given (empty)");
+			return false;
+		}
 		for (String line:lines)
 		{
 			parseLine(line, tips, icons);
 		}
+
+		return true;
 	}
 
 
@@ -56,23 +69,12 @@ public final class CsvParser
 	{
 		String iconName = "";
 		String[] split = iconUrlString.split("/");
-//		for (String part : split)
-//		{
-//			Log.d(TAG, part);
-//		}
 
 		iconName = split[split.length - 1];
+		Log.d(TAG, "UrlUtil.guessFileName=" + URLUtil.guessFileName(iconUrlString, null, null));
 
-		try
-		{
-			URL iconURL = new URL(iconUrlString);
-			Icon icon = new Icon(iconName, iconURL);
-			icons.add(icon);
-		}
-		catch (MalformedURLException e)
-		{
-			Log.i(TAG, "Bad icon path:" + iconUrlString);
-		}
+		Icon icon = new Icon(iconName, iconUrlString);
+		icons.add(icon);
 
 		return iconName;
 	}

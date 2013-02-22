@@ -61,18 +61,12 @@ public class IconDbAdapter
 		{
 			Log.d(TAG, "Try update icon:" + downloadedIcon);
 
-//			Tip tipFromDb = getTipById(downloadedTip.getTipId());
-//			if (tipFromDb == null)
-//			{
-//				Log.d(TAG, "Tip does not exist, inserting");
-//				insertTip(downloadedTip);
-//			}
-//			else if (tipFromDb.getLastModifiedDate().before(downloadedTip.getLastModifiedDate()))
-//			{
-//				Log.d(TAG, "Existing tip is older, updating");
-//				Log.d(TAG, "from db:"+tipFromDb);
-//				updateTip(downloadedTip);
-//			}
+			Icon iconFromDb = getIconByName(downloadedIcon.getName());
+			if (iconFromDb == null)
+			{
+				Log.d(TAG, "Icon does not exist, inserting");
+				insertIcon(downloadedIcon);
+			}
 		}
 
 	}
@@ -132,9 +126,13 @@ public class IconDbAdapter
 	{
         ContentValues values = new ContentValues();
         values.put(COL_ICON_NAME, icon.getName());
-//      values.put(KEY_SERVER_URL, icon.getServerUrl().toString());
-        values.put(COL_BITMAP_BYTES, icon.getIconAsBytes());
-//      values.put(KEY_TAGS_STRING, icon.getTagsString());
+		values.put(COL_SERVER_URL, icon.getServerUrl());
+        
+		byte[] iconBytes = icon.getIconAsBytes();
+		if (iconBytes != null)
+			values.put(COL_BITMAP_BYTES, iconBytes);
+		
+		values.put(COL_TAGS_STRING, icon.getTagsString());
 
 		//API level 11:db.beginTransactionNonExclusive();
         db.beginTransaction();
@@ -152,6 +150,8 @@ public class IconDbAdapter
 
         cursor.moveToFirst();
         int count = cursor.getInt(0);
+		cursor.close();
+		
         Log.d(TAG, "getCount=" + count);
         return count;
     }
@@ -170,13 +170,15 @@ public class IconDbAdapter
 
     private Icon getIcon(String whereClause)
 	{
+		Icon iconFromCursor =null;
 		String sqlStatement = SELECT_ALL_COLUMNS + whereClause + " LIMIT 1";
 		Cursor cursor = db.rawQuery(sqlStatement, null);
         if (cursor.moveToFirst())
 		{
-            return getIconFromCursor(cursor);
+            iconFromCursor= getIconFromCursor(cursor);
         }
-        return null;
+		cursor.close();
+        return iconFromCursor;
     }
 
 //	public Icon getIconByTags(String[] tags)

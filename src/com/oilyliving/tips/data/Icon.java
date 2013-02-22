@@ -8,6 +8,7 @@ import android.util.*;
 import com.oilyliving.tips.data.*;
 import java.io.*;
 import java.net.*;
+import android.webkit.*;
 
 public class Icon implements Parcelable
 {
@@ -16,7 +17,7 @@ public class Icon implements Parcelable
     private final String name;
     private String[] tags;
     private Bitmap icon;
-    private final URL serverUrl;
+    private final String serverUrl;
 
     public Icon(String name, Bitmap icon)
 	{
@@ -26,7 +27,7 @@ public class Icon implements Parcelable
         this.serverUrl = null;
     }
 
-    public Icon(String name, URL url) 
+    public Icon(String name, String url) 
 	{
         this.name = name;
         this.icon = null;
@@ -34,12 +35,12 @@ public class Icon implements Parcelable
         this.serverUrl = url;
     }
 
-    public Icon(String name, Bitmap icon, String[] tags)
+    public Icon(String name, Bitmap icon, String[] tags, String serverUrl)
 	{
         this.name = name;
         this.icon = icon;
         this.tags = tags;
-        this.serverUrl = null;
+        this.serverUrl = serverUrl;
     }
 
     public Icon(String name, byte[] iconBytes, String tagString)
@@ -64,6 +65,8 @@ public class Icon implements Parcelable
 
     public String getTagsString()
 	{
+		if (tags == null || tags.length < 1)
+			return "";
         return TextUtils.join(",", this.tags);
     }
 
@@ -73,7 +76,7 @@ public class Icon implements Parcelable
 			this.tags = str.split(",");
     }
 
-    public URL getServerUrl()
+    public String getServerUrl()
 	{
         return this.serverUrl;
     }
@@ -85,6 +88,8 @@ public class Icon implements Parcelable
 
     public byte[] getIconAsBytes()
 	{
+		if (icon == null)
+			return null;
         return convertBitmapToBytes(this.icon);
     }
 
@@ -123,11 +128,23 @@ public class Icon implements Parcelable
 	{
 		Log.d(TAG, "writing to parcel:" + name);
 		out.writeString(name);
+		out.writeString(serverUrl);
+
 		icon.writeToParcel(out, 0);
 
 		Log.d(TAG, "parcel.dataSize:" + out.dataSize());		
 	}
 
+	private Icon(Parcel in)
+	{ 
+		Log.d(TAG, "Reading from parcel");
+		name = in.readString();
+		serverUrl = in.readString();
+		icon = Bitmap.CREATOR.createFromParcel(in);
+
+		Log.d(TAG, "name=" + name);
+
+	}
 
 	public static final Parcelable.Creator<Icon> CREATOR = new Parcelable.Creator<Icon>() 
 	{ 
@@ -138,14 +155,5 @@ public class Icon implements Parcelable
 		{ return new Icon[size]; }
 	};
 
-	private Icon(Parcel in)
-	{ 
-		Log.d(TAG, "Reading from parcel");
-		name = in.readString();
-		Log.d(TAG, "name=" + name);
-		serverUrl = null;
-		icon = Bitmap.CREATOR.createFromParcel(in);
-
-	}
 
 }
