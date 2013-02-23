@@ -217,6 +217,7 @@ public class IconDbAdapter
 		Bitmap thievesSpray = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves_spray);
 		Bitmap peppermint = BitmapFactory.decodeResource(context.getResources(), R.drawable.peppermint);
 		Bitmap rc = BitmapFactory.decodeResource(context.getResources(), R.drawable.rc);
+		Bitmap purification = BitmapFactory.decodeResource(context.getResources(), R.drawable.purification);
 		insertIcon(new Icon("peppermint", peppermint));
 		insertIcon(new Icon("ylIcon", ylIcon));
 		insertIcon(new Icon("rc", rc));
@@ -225,7 +226,8 @@ public class IconDbAdapter
 		insertIcon(new Icon("lavenderIcon", lavenderIcon));
 		insertIcon(new Icon("kidScentsIcon", kidScentsIcon));
 		insertIcon(new Icon("thievesSpray", thievesSpray));
-
+		insertIcon(new Icon("purification", purification));
+		
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
