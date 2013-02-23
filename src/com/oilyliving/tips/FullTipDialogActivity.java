@@ -7,11 +7,13 @@ import android.widget.*;
 import android.util.*;
 import android.text.method.*;
 import com.oilyliving.tips.data.*;
+import android.text.util.*;
+import android.text.*;
 
 
 public class FullTipDialogActivity extends Activity
 {
-//	private static final String TAG = "FullTipDialogActivity";
+	private static final String TAG = "FullTipDialogActivity";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -23,23 +25,46 @@ public class FullTipDialogActivity extends Activity
 
 		Tip tip = extras.getParcelable(WidgetProvider.EXTRA_TIP);				
 
+		String tipText = tip.getTipText();
+		String notes = "";
+		String referenceUrl = tip.getWebReference();
+		if (referenceUrl != null && referenceUrl != "")
+		{
+			Log.d(TAG, "reference='" + referenceUrl +"'");
+			String link = " <sup><a href=\"" + referenceUrl + "\">[1]</a></sup>";
+			tipText = tipText + link;
+		}			
+
+		int eopr = tip.getEoprPage();
+		if (eopr > 0)
+		{
+			String link= " <sup>[EPRO:" + eopr + "]</sup>";
+			tipText = tipText + link;
+			notes = notes + "ERPO = Essential Oils Pocket Reference\n";
+		}			
+
+		int rgeo = tip.getRgeoPage();
+		if (rgeo > 0)
+		{
+			String link= " <sup>[RGEO:" + rgeo + "]</sup>";
+			tipText = tipText + link;
+			notes = notes + "RGEO = Reference Guide for Essential Oils\n";
+		}			
+
 		TextView tipTextView = (TextView)findViewById(R.id.dialogTipText);
-		tipTextView.setText(tip.getTipTextAndId());
+		tipTextView.setText(Html.fromHtml(tipText));
+		tipTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
 
 		TextView link = (TextView)findViewById(R.id.dialogLink);
 		link.setMovementMethod(LinkMovementMethod.getInstance());
+		Log.d(TAG, "link=" + link.getText());
 
 		ImageView iconView = (ImageView)findViewById(R.id.dialogIcon);
 		iconView.setImageBitmap(tip.getIcon().getIconAsBitmap());
 
-		String referenceUrl = tip.getReferenceUrl();
-		if (referenceUrl != null && referenceUrl != "")
-		{
-			TextView ref = (TextView)findViewById(R.id.references);
-			String refLink = "<a href=\"" + referenceUrl + "\">[1]</a>";
-			ref.setText(refLink);
-			ref.setMovementMethod(LinkMovementMethod.getInstance());
-		}			
+		TextView refTextView = (TextView)findViewById(R.id.references);
+		refTextView.setText(notes);
 
 	}
 }

@@ -20,12 +20,14 @@ public class TipsDbAdapter
     public static final String COL_REFERNCE = "RefUrl";
     public static final String COL_ICON_NAME = "IconName";
     public static final String COL_ICON_TAGS = "IconTags";
+    public static final String COL_EOPR_PG = "EOPocketRefPg";
+    public static final String COL_RGEO_PG = "RefGuideEoPg";
 	public static final String COL_LAST_MOD_MSEC_EOPOCH= "LastModifiedMSecEpoch";
     private static final String TAG = "TipsDbAdapter";
 
     private static final String DATABASE_NAME = "OilyTips";
     private static final String DATABASE_TABLE = "tblTips";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     private static final String DATABASE_CREATE =
 	"create table " + DATABASE_TABLE +
@@ -36,6 +38,8 @@ public class TipsDbAdapter
 	COL_REFERNCE + " text null, " +
 	COL_ICON_NAME + " text null, " +
 	COL_ICON_TAGS + " text null, " +
+	COL_EOPR_PG+ " int null, " +
+	COL_RGEO_PG + " int null, " +
 	COL_LAST_MOD_MSEC_EOPOCH + " long null " +
 	" );";
 
@@ -131,9 +135,11 @@ public class TipsDbAdapter
 		values.put(COL_TIP_ID, tip.getTipId());
         values.put(COL_TIP_TEXT, tip.getTipText());
         values.put(COL_ICON_NAME, tip.getIconName());
-		values.put(COL_REFERNCE, tip.getReferenceUrl());
+		values.put(COL_REFERNCE, tip.getWebReference());
 		values.put(COL_LAST_MOD_MSEC_EOPOCH, tip.getLastModifiedDate().getTime());
-
+        values.put(COL_EOPR_PG, tip.getEoprPage());
+		values.put(COL_RGEO_PG, tip.getRgeoPage());
+		
 		//API level 11:db.beginTransactionNonExclusive();
         db.beginTransaction();
 		long insertedRowId = db.insert(DATABASE_TABLE, null, values);
@@ -148,9 +154,11 @@ public class TipsDbAdapter
         ContentValues values = new ContentValues();
         values.put(COL_TIP_TEXT, tip.getTipText());
         values.put(COL_ICON_NAME, tip.getIconName());
-		values.put(COL_REFERNCE, tip.getReferenceUrl());
+		values.put(COL_REFERNCE, tip.getWebReference());
 		values.put(COL_LAST_MOD_MSEC_EOPOCH, tip.getLastModifiedDate().getTime());
-
+        values.put(COL_EOPR_PG, tip.getEoprPage());
+		values.put(COL_RGEO_PG, tip.getRgeoPage());
+		
 		//API level 11:db.beginTransactionNonExclusive();
         db.beginTransaction();
 		int countUpdated= db.update(DATABASE_TABLE, values, COL_TIP_ID + "=?", new String[]{"" + tip.getTipId()});
@@ -170,6 +178,8 @@ public class TipsDbAdapter
 			COL_TIP_TEXT + "," +
 			COL_ICON_NAME + "," +
 			COL_REFERNCE + "," +
+			COL_EOPR_PG+ "," +
+			COL_RGEO_PG + "," +
 			COL_LAST_MOD_MSEC_EOPOCH +
 			" from "  + DATABASE_TABLE + " " +
 			whereClause +  " " +
@@ -185,9 +195,13 @@ public class TipsDbAdapter
             String tipText = cursor.getString(2);// + " (Tip #" + rowId + ")";
             String iconName = cursor.getString(3);
 			String ref = cursor.getString(4);
-			long lastModMsecEpoch = cursor.getLong(5);
+			int eopr= cursor.getInt(5);
+			int rgeo = cursor.getInt(6);
+			long lastModMsecEpoch = cursor.getLong(7);
 			Date lastMod = new Date(lastModMsecEpoch);
             tip = new Tip(tipId, tipText, iconName, ref, lastMod);
+			tip.setEoprPage(eopr);
+			tip.setRgeoPage(rgeo);
 		}
 		cursor.close();
         return tip;
@@ -222,17 +236,22 @@ public class TipsDbAdapter
 	{
 		db.beginTransaction();
 		deleteAll();
-		insertTip(new Tip(2001, context.getString(R.string.tip1), "ylIcon"));
-		insertTip(new Tip(1, context.getString(R.string.tip2), "peppermint"));
+		Tip tip1001 = new Tip(1001, context.getString(R.string.tip4), "rc", context.getString(R.string.ref4), new Date(0));
+		insertTip(tip1001);
+		
+		Tip tip2001 = new Tip(2001, context.getString(R.string.tip1), "purification");
+		tip2001.setEoprPage(149);
+		tip2001.setRgeoPage(187);
+		insertTip(tip2001);
+/*		
 		insertTip(new Tip(3, context.getString(R.string.tip3), "rc"));
-		insertTip(new Tip(1001, context.getString(R.string.tip4), "rc","http://onlinelibrary.wiley.com/doi/10.1002/ffj.1904/abstract",new Date(0)));
 		insertTip(new Tip(5, context.getString(R.string.tip5), "ylIcon"));
 		insertTip(new Tip(6, context.getString(R.string.tip6), "thievesIcon"));
 		insertTip(new Tip(7, context.getString(R.string.tip7), "frankincense"));
 		insertTip(new Tip(8, context.getString(R.string.tip8), "lavenderIcon"));
 		insertTip(new Tip(9, context.getString(R.string.tip9), "kidScentsIcon"));
 		insertTip(new Tip(10, context.getString(R.string.tip10), "thievesSpray"));
-		db.setTransactionSuccessful();
+*/		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
 

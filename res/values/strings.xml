@@ -5,10 +5,16 @@
     <string name="app_name">OilyTips</string>
 	<string name="link"><a href="http://youngliving.com/chandragolding">Order yours today!</a></string>
 	<string name="downloadUrl">http://tgoldingtutorial1.appspot.com/csv</string>
-	<string name="tip1">The Young Living blend Purification takes the sting out of fire ant bites. Use every 4-6 hours for 3 days to completely avoid the blistering and pain.</string>
+	<string name="tip1">The Young Living blend Purification takes the sting out of fire ant bites.</string>
+	
 	<string name="tip2">Peppermint is great for relieving headaches. Rub it across the forehead and on the temples.</string>
+	<string name="ref2"></string>
+		
 	<string name="tip3">Use the Young Living blend R.C. for respiratory problems. Rub topically on chest and diffuse.</string>
+	
 	<string name="tip4">In lab testing, the Young Living blend R.C. blend wiped out MRSA!</string>
+	<string name="ref4">http://onlinelibrary.wiley.com/doi/10.1002/ffj.1904/abstract</string>
+	
 	<string name="tip5">For babies, use Lemon oil along the spine for a fever</string>	
 	<string name="tip6">For babies, use Myrtle oil for congestion</string>	
 	<string name="tip7">Frankincense is working in clinical trials to cure many kinds of cancer!</string>	

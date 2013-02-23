@@ -17,17 +17,18 @@ public class Tip implements Parcelable
 	private final int tipId;
     private final String tipText;
     private final String iconName;
-	private final String reference;
-	private final Date lastModified;
-	private Icon icon;
+	private String webReference = "";
+	private int eoprPage = 0;
+	private int rgeoPage = 0;
+	private Date lastModified = new Date(0);
+	private Icon icon = null;
 
     public Tip(int tipId, String tipText, String iconName, String reference, Date lastUpdated)
 	{
 		this.tipId = tipId;
         this.tipText = tipText;
 		this.iconName = iconName;
-        this.icon = null;
-		this.reference = reference;
+		this.webReference = reference;
 		this.lastModified = lastUpdated;
     }
 
@@ -36,9 +37,6 @@ public class Tip implements Parcelable
 		this.tipId = tipId;
         this.tipText = tipText;
 		this.iconName = iconName;
-        this.icon = null;
-		this.reference = "";
-		this.lastModified = new Date(0);
     }
 
     public Tip(int tipId, String tipText, Icon icon)
@@ -47,8 +45,36 @@ public class Tip implements Parcelable
         this.tipText = tipText;
         this.icon = icon;
         this.iconName = icon.getName();
-		this.reference = "";
-		this.lastModified = new Date(0);
+	}
+
+	public void setWebReference(String webReference)
+	{
+		this.webReference = webReference;
+	}
+
+	public String getWebReference()
+	{
+		return webReference;
+	}
+
+	public void setRgeoPage(int rgeoPage)
+	{
+		this.rgeoPage = rgeoPage;
+	}
+
+	public int getRgeoPage()
+	{
+		return rgeoPage;
+	}
+
+	public void setEoprPage(int eoprPage)
+	{
+		this.eoprPage = eoprPage;
+	}
+
+	public int getEoprPage()
+	{
+		return eoprPage;
 	}
 
 	public String getTipTextAndId()
@@ -75,11 +101,6 @@ public class Tip implements Parcelable
 		return this.lastModified;
 	}
 
-	public String getReferenceUrl()
-	{
-		return this.reference;
-	}
-
     public Icon getIcon()
 	{
         return this.icon;
@@ -89,6 +110,7 @@ public class Tip implements Parcelable
 	{
 		this.icon = icon;
 	}
+
 
     @Override
     public String toString()
@@ -106,7 +128,9 @@ public class Tip implements Parcelable
 		out.writeInt(tipId);
 		out.writeString(tipText);
 		out.writeString(iconName);
-		out.writeString(reference);
+		out.writeString(webReference);
+		out.writeInt(eoprPage);
+		out.writeInt(rgeoPage);
 		out.writeLong(lastModified.getTime());
 		icon.writeToParcel(out, 0);		
 		Log.d(TAG, "parcel.dataSize:" + out.dataSize());		
@@ -119,11 +143,14 @@ public class Tip implements Parcelable
 		tipId = in.readInt();
 		tipText = in.readString();
 		iconName = in.readString();
-		reference = in.readString();
+		webReference = in.readString();
+		eoprPage = in.readInt();
+		rgeoPage = in.readInt();
 		lastModified = new Date(in.readLong());
 		icon = Icon.CREATOR.createFromParcel(in);
 
 		Log.d(TAG, "tipText=" + tipText);		
+		Log.d(TAG, "reference=" + webReference);		
 	}
 
 	public static final Parcelable.Creator<Tip> CREATOR = new Parcelable.Creator<Tip>() 
