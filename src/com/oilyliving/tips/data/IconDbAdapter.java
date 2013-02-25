@@ -206,29 +206,9 @@ public class IconDbAdapter
 
 	public void InitIcons(Context context)
 	{
-		db.beginTransaction();
-		deleteAll();
-
-		Bitmap ylIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.yllogo1);
-		Bitmap thievesIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves1);
-		Bitmap lavenderIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.lavender_field);
-		Bitmap kidScentsIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.kidscents1);
-		Bitmap frankincense = BitmapFactory.decodeResource(context.getResources(), R.drawable.frankincense);
-		Bitmap thievesSpray = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves_spray);
-		Bitmap peppermint = BitmapFactory.decodeResource(context.getResources(), R.drawable.peppermint);
-		Bitmap rc = BitmapFactory.decodeResource(context.getResources(), R.drawable.rc);
-		insertIcon(new Icon("peppermint", peppermint));
-		insertIcon(new Icon("ylIcon", ylIcon));
-		insertIcon(new Icon("rc", rc));
-		insertIcon(new Icon("thievesIcon", thievesIcon));
-		insertIcon(new Icon("frankincense", frankincense));
-		insertIcon(new Icon("lavenderIcon", lavenderIcon));
-		insertIcon(new Icon("kidScentsIcon", kidScentsIcon));
-		insertIcon(new Icon("thievesSpray", thievesSpray));
-
-		db.setTransactionSuccessful();
-		db.endTransaction();
+		IconsBootstrap.initIcons(context,db,this);
 	}
+
 
 
 }

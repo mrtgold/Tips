@@ -59,10 +59,30 @@ public final class CsvParser
 		String iconName ="";
 		parseIcon(iconUrlString, icons);
 
-		Tip tip = new Tip(tipId, tipText, iconName, referenceUrlString, lastModified);
+		Tip tip = new Tip(tipId, tipText, iconName, "", lastModified);
+		parseRefData(tip, referenceUrlString);
 		tips.add(tip);		
 
 
+	}
+
+	private static void parseRefData(Tip tip, String referenceUrlString)
+	{
+		String[] parts= referenceUrlString.split("[;]");
+		for (String part:parts)
+		{
+			Log.d(TAG, part);
+			if (part.startsWith("http") || part.startsWith("www"))
+				tip.setWebReference(part);
+			else if (part.startsWith("EOPR"))
+			{
+				tip.setEoprPage(0);
+			}
+			else if (part.startsWith("RGEO"))
+			{		
+				tip.setRgeoPage(0);
+			}	
+		}
 	}
 
 	private static String parseIcon(String iconUrlString, List<Icon> icons)
