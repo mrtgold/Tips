@@ -18,10 +18,12 @@ public class IconDbAdapter
     public static final String COL_SERVER_URL = "ServerUrl";
     public static final String COL_BITMAP_BYTES = "BitmapBytes";
     public static final String COL_TAGS_STRING = "TagsString";
+	public static final String COL_DL_ATTEMPTS = "DownloadAttemps";
+	
 
     private static final String DATABASE_NAME = "OilyTipsIcons";
     private static final String DATABASE_TABLE = "tblIcons";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String DATABASE_CREATE =
 	"create table " + DATABASE_TABLE +
@@ -31,7 +33,8 @@ public class IconDbAdapter
 	COL_LOCAL_URI + " text null, " +
 	COL_SERVER_URL + " text null, " +
 	COL_BITMAP_BYTES + " blob null, " +
-	COL_TAGS_STRING + " text null " +
+	COL_TAGS_STRING + " text null "  +
+	COL_DL_ATTEMPTS + " int null " +
 	" );";
 
     private static final String SELECT_ALL_COLUMNS =
@@ -200,8 +203,11 @@ public class IconDbAdapter
         String iconName = cursor.getString(1);
         byte[] iconBytes = cursor.getBlob(4);
         String tagsString = cursor.getString(5);
+		String url  = cursor.getString(3);
 
-        return new Icon(iconName, iconBytes, tagsString);
+        Icon icon = new Icon(iconName, iconBytes, tagsString);
+		icon.setServerUrl(url);
+		return icon;
     }
 
 	public void InitIcons(Context context)

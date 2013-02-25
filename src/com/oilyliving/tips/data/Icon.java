@@ -15,23 +15,19 @@ public class Icon implements Parcelable
 	private static final String TAG = "Icon";
 
     private final String name;
-    private String[] tags;
-    private Bitmap icon;
-    private final String serverUrl;
+    private String[] tags = null;
+    private Bitmap icon = null;
+    private String serverUrl = null;
 
     public Icon(String name, Bitmap icon)
 	{
         this.name = name;
         this.icon = icon;
-        this.tags = null;
-        this.serverUrl = null;
     }
 
     public Icon(String name, String url) 
 	{
         this.name = name;
-        this.icon = null;
-        this.tags = null;
         this.serverUrl = url;
     }
 
@@ -47,11 +43,19 @@ public class Icon implements Parcelable
 	{
         this.name = name;
         this.icon = convertBytesToBitmap(iconBytes);
-        this.tags = null;
-        this.serverUrl = null;
 
         setTagsFromString(tagString);
     }
+
+	public void setServerUrl(String serverUrl)
+	{
+		this.serverUrl = serverUrl;
+	}
+
+	public String getServerUrl()
+	{
+		return serverUrl;
+	}
 
     public String getName()
 	{
@@ -74,11 +78,6 @@ public class Icon implements Parcelable
 	{
 		if (str !=  null)
 			this.tags = str.split(",");
-    }
-
-    public String getServerUrl()
-	{
-        return this.serverUrl;
     }
 
     public Bitmap getIconAsBitmap()
