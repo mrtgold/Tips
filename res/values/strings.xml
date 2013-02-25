@@ -5,21 +5,20 @@
     <string name="app_name">OilyTips</string>
 	<string name="link"><a href="http://youngliving.com/chandragolding">Order yours today!</a></string>
 	<string name="downloadUrl">http://tgoldingtutorial1.appspot.com/csv</string>
-	<string name="tip1">The Young Living blend Purification takes the sting out of fire ant bites.</string>
-	
-	<string name="tip2">Peppermint is great for relieving headaches. Rub it across the forehead and on the temples.</string>
-	<string name="ref2"></string>
-		
-	<string name="rcResp">Use the Young Living blend R.C. for respiratory problems. Rub topically on chest and diffuse.</string>
-	
-	<string name="rcMrsa">In lab testing, the Young Living blend R.C. blend wiped out MRSA!</string>
-	<string name="rcMrsaRef">http://onlinelibrary.wiley.com/doi/10.1002/ffj.1904/abstract</string>
-	
-	<string name="tip5">For babies, use Lemon oil along the spine for a fever</string>	
-	<string name="tip6">For babies, use Myrtle oil for congestion</string>	
-	<string name="tip7">Frankincense is working in clinical trials to cure many kinds of cancer!</string>	
-	<string name="tip8">Lavender is the Swiss Army knife in your essential oil toolkit - anti-viral, anti-bacterial, anti-fungal!</string>	
-	<string name="tip9">Concerned about your kids swallowing their toothpaste? Try KidScents!</string>
-	<string name="tip10">Thieves Spray is a great way to stop the flu before it starts!</string>	
+
+	<string name="tip1">Peppermint is great for relieving headaches. Rub it across the forehead and on the temples.</string>
+	<string name="ref1">http://www.ncbi.nlm.nih.gov/pubmed/23196150</string>
+
+	<string name="tip1001">In lab testing, the Young Living blend R.C. blend wiped out MRSA!</string>
+	<string name="ref1001">http://onlinelibrary.wiley.com/doi/10.1002/ffj.1904/abstract</string>
+
+    <string name="tip2001">The Young Living blend Purification takes the sting out of fire ant bites.</string>
+	<string name="tip4001">For babies, use Lemon oil along the spine for a fever</string>
+	<string name="tip5001">For babies, use Myrtle oil for congestion</string>
+	<string name="tip6001">Frankincense is working in clinical trials to cure many kinds of cancer!</string>
+	<string name="tip7001">Lavender is the Swiss Army knife in your essential oil toolkit - anti-viral, anti-bacterial, anti-fungal!</string>
+	<string name="tip8001">Concerned about your kids swallowing their toothpaste? Try KidScents!</string>
+	<string name="tip9001">Thieves Spray is a great way to stop the flu before it starts!</string>
+    <string name="tip10001">Use the Young Living blend R.C. for respiratory problems. Rub topically on chest and diffuse.</string>
 </resources>
 		
