@@ -10,10 +10,10 @@
 	<string name="tip2">Peppermint is great for relieving headaches. Rub it across the forehead and on the temples.</string>
 	<string name="ref2"></string>
 		
-	<string name="tip3">Use the Young Living blend R.C. for respiratory problems. Rub topically on chest and diffuse.</string>
+	<string name="rcResp">Use the Young Living blend R.C. for respiratory problems. Rub topically on chest and diffuse.</string>
 	
-	<string name="tip4">In lab testing, the Young Living blend R.C. blend wiped out MRSA!</string>
-	<string name="ref4">http://onlinelibrary.wiley.com/doi/10.1002/ffj.1904/abstract</string>
+	<string name="rcMrsa">In lab testing, the Young Living blend R.C. blend wiped out MRSA!</string>
+	<string name="rcMrsaRef">http://onlinelibrary.wiley.com/doi/10.1002/ffj.1904/abstract</string>
 	
 	<string name="tip5">For babies, use Lemon oil along the spine for a fever</string>	
 	<string name="tip6">For babies, use Myrtle oil for congestion</string>	

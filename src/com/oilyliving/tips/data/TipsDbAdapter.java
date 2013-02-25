@@ -234,25 +234,8 @@ public class TipsDbAdapter
 
 	public void InitTips(Context context)
 	{
-		db.beginTransaction();
-		deleteAll();
-		Tip tip1001 = new Tip(1001, context.getString(R.string.tip4), "rc", context.getString(R.string.ref4), new Date(0));
-		insertTip(tip1001);
-		
-		Tip tip2001 = new Tip(2001, context.getString(R.string.tip1), "purification");
-		tip2001.setEoprPage(149);
-		tip2001.setRgeoPage(187);
-		insertTip(tip2001);
-/*		
-		insertTip(new Tip(3, context.getString(R.string.tip3), "rc"));
-		insertTip(new Tip(5, context.getString(R.string.tip5), "ylIcon"));
-		insertTip(new Tip(6, context.getString(R.string.tip6), "thievesIcon"));
-		insertTip(new Tip(7, context.getString(R.string.tip7), "frankincense"));
-		insertTip(new Tip(8, context.getString(R.string.tip8), "lavenderIcon"));
-		insertTip(new Tip(9, context.getString(R.string.tip9), "kidScentsIcon"));
-		insertTip(new Tip(10, context.getString(R.string.tip10), "thievesSpray"));
-*/		db.setTransactionSuccessful();
-		db.endTransaction();
+		TipsBootstrap.initTips(db, this, context);
 	}
+
 
 }
