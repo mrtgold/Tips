@@ -46,7 +46,7 @@ public class DownloadService extends IntentService
 
 		try
 		{
-			success = downloadAndImport(appContext, success);
+			success = downloadAndImportTips(appContext, success);
 		}
 		catch (Exception e)
 		{
@@ -69,7 +69,7 @@ public class DownloadService extends IntentService
 		}
 	}
 
-	private boolean downloadAndImport(Context appContext, boolean success)
+	private boolean downloadAndImportTips(Context appContext, boolean success)
 	{
 		Log.i(TAG, "Checking internet access");
 
