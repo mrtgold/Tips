@@ -28,7 +28,7 @@ public class FullTipDialogActivity extends Activity
 		String tipText = tip.getTipText();
 		String notes = "";
 		String referenceUrl = tip.getWebReference();
-		if (referenceUrl != null && referenceUrl != "")
+		if ( referenceUrl != null && !referenceUrl.trim().isEmpty())
 		{
 			Log.d(TAG, "reference='" + referenceUrl +"'");
 			String link = " <sup><a href=\"" + referenceUrl + "\">[1]</a></sup>";

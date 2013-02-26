@@ -33,7 +33,7 @@ public class IconDbAdapter
 	COL_LOCAL_URI + " text null, " +
 	COL_SERVER_URL + " text null, " +
 	COL_BITMAP_BYTES + " blob null, " +
-	COL_TAGS_STRING + " text null "  +
+	COL_TAGS_STRING + " text null, "  +
 	COL_DL_ATTEMPTS + " int null " +
 	" );";
 
