@@ -121,11 +121,14 @@ public class WidgetProvider extends AppWidgetProvider
 
     private Icon getIconFromDb(Context context, Tip tip)
 	{
-        IconDbAdapter db = InitIconsDb(context);
         String iconName = tip.getIconName();
+        IconDbAdapter db = InitIconsDb(context);
 		Icon icon = db.getIconByName(iconName);
         db.close();
-        Log.d(TAG, "Icon for tip #" + tip.getTipId() + ": " + icon.getName());
+//        int tipId = tip.getTipId();
+//		String name = icon.getName();
+//		String description = "Icon for tip #" + tipId + ": " + name;
+//		Log.d(TAG, description);
 
 		return icon;
 	}

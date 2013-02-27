@@ -62,16 +62,21 @@ public class IconDbAdapter
 	{
 		for (Icon downloadedIcon:icons)
 		{
-			Log.d(TAG, "Try update icon:" + downloadedIcon);
-
-			Icon iconFromDb = getIconByName(downloadedIcon.getName());
-			if (iconFromDb == null)
-			{
-				Log.d(TAG, "Icon does not exist, inserting");
-				insertIcon(downloadedIcon);
-			}
+			insertOrUpdate(downloadedIcon);
 		}
 
+	}
+
+	public void insertOrUpdate(Icon icon)
+	{
+		Log.d(TAG, "Try update icon:" + icon);
+
+		Icon iconFromDb = getIconByName(icon.getName());
+		if (iconFromDb == null)
+		{
+			Log.d(TAG, "Icon does not exist, inserting");
+			insertIcon(icon);
+		}
 	}
 
     private static class DatabaseHelper extends SQLiteOpenHelper
