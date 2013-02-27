@@ -38,17 +38,17 @@ public class FullTipDialogActivity extends Activity
 		int eopr = tip.getEoprPage();
 		if (eopr > 0)
 		{
-			String link= " <sup>[EPRO:" + eopr + "]</sup>";
+			String link= " <sup>[PR:" + eopr + "]</sup>";
 			tipText = tipText + link;
-			notes = notes + "ERPO = Essential Oils Pocket Reference\n";
+			notes = notes + "PR = Essential Oils Pocket Reference\n";
 		}			
 
 		int rgeo = tip.getRgeoPage();
 		if (rgeo > 0)
 		{
-			String link= " <sup>[RGEO:" + rgeo + "]</sup>";
+			String link= " <sup>[RG:" + rgeo + "]</sup>";
 			tipText = tipText + link;
-			notes = notes + "RGEO = Reference Guide for Essential Oils\n";
+			notes = notes + "RG = Reference Guide for Essential Oils\n";
 		}			
 
 		TextView tipTextView = (TextView)findViewById(R.id.dialogTipText);
