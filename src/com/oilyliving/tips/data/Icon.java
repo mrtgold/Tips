@@ -129,8 +129,8 @@ public class Icon implements Parcelable
 		out.writeString(name);
 		out.writeString(serverUrl);
 
-		icon.writeToParcel(out, 0);
-
+		out.writeValue(icon);
+	 
 		Log.d(TAG, "parcel.dataSize:" + out.dataSize());		
 	}
 
@@ -139,7 +139,7 @@ public class Icon implements Parcelable
 		Log.d(TAG, "Reading from parcel");
 		name = in.readString();
 		serverUrl = in.readString();
-		icon = Bitmap.CREATOR.createFromParcel(in);
+		icon= in.readParcelable(Bitmap.class.getClassLoader());
 
 		Log.d(TAG, "name=" + name);
 

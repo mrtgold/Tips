@@ -56,17 +56,16 @@ public final class CsvParser
 			Log.i(TAG, "LastModifiedDate in wrong format:" + lastModifiedString + "; using default date:" + lastModified);
 		}
 
-		String iconName ="";
-		parseIcon(iconUrlString, icons);
+		String iconName = parseIconAndAddToList(iconUrlString, icons);
 
 		Tip tip = new Tip(tipId, tipText, iconName, "", lastModified);
-		parseRefData(tip, referenceUrlString);
+		parseAndSetRefData(tip, referenceUrlString);
 		tips.add(tip);		
 
 
 	}
 
-	private static void parseRefData(Tip tip, String referenceUrlString)
+	private static void parseAndSetRefData(Tip tip, String referenceUrlString)
 	{
 		String[] parts= referenceUrlString.split("[;]");
 		for (String part:parts)
@@ -85,7 +84,7 @@ public final class CsvParser
 		}
 	}
 
-	private static String parseIcon(String iconUrlString, List<Icon> icons)
+	private static String parseIconAndAddToList(String iconUrlString, List<Icon> icons)
 	{
 		String iconName = "";
 		String[] split = iconUrlString.split("/");

@@ -97,11 +97,12 @@ public class WidgetProvider extends AppWidgetProvider
 
 		remoteViews.setTextViewText(R.id.tipText, tip.getTipTextAndId());
 
-
-		if (tip.getIcon() == null || tip.getIcon().getIconAsBitmap() == null)
+		Icon icon = getIconFromDb(context, tip);
+		
+		if (icon == null || icon.getIconAsBitmap() == null)
 			remoteViews.setImageViewResource(R.id.icon, R.drawable.yllogo1);
 		else
-			remoteViews.setImageViewBitmap(R.id.icon, tip.getIcon().getIconAsBitmap());
+			remoteViews.setImageViewBitmap(R.id.icon, icon.getIconAsBitmap());
 
 		return remoteViews;
 	}
@@ -111,10 +112,6 @@ public class WidgetProvider extends AppWidgetProvider
         TipsDbAdapter db = InitTipsDb(context);
         Tip tip = db.getRandomTip();
         db.close();
-
-		Icon icon = getIconFromDb(context, tip);
-		tip.setIcon(icon);
-
         Log.d(TAG, "Tip for widget: " + tip);
         return tip;
     }
@@ -125,10 +122,6 @@ public class WidgetProvider extends AppWidgetProvider
         IconDbAdapter db = InitIconsDb(context);
 		Icon icon = db.getIconByName(iconName);
         db.close();
-//        int tipId = tip.getTipId();
-//		String name = icon.getName();
-//		String description = "Icon for tip #" + tipId + ": " + name;
-//		Log.d(TAG, description);
 
 		return icon;
 	}

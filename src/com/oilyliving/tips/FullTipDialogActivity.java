@@ -1,14 +1,13 @@
 package com.oilyliving.tips;
 
 import android.app.*;
+import android.content.*;
 import android.os.*;
-import android.view.*;
-import android.widget.*;
-import android.util.*;
-import android.text.method.*;
-import com.oilyliving.tips.data.*;
-import android.text.util.*;
 import android.text.*;
+import android.text.method.*;
+import android.util.*;
+import android.widget.*;
+import com.oilyliving.tips.data.*;
 
 
 public class FullTipDialogActivity extends Activity
@@ -60,12 +59,30 @@ public class FullTipDialogActivity extends Activity
 		link.setMovementMethod(LinkMovementMethod.getInstance());
 		Log.d(TAG, "link=" + link.getText());
 
-		ImageView iconView = (ImageView)findViewById(R.id.dialogIcon);
-		iconView.setImageBitmap(tip.getIcon().getIconAsBitmap());
+		Icon icon = getIconFromDb(getApplicationContext(), tip);
 
+		ImageView iconView = (ImageView)findViewById(R.id.dialogIcon);
+		if (icon == null || icon.getIconAsBitmap() == null)
+			iconView.setImageResource( R.drawable.yllogo1);
+		else
+			iconView.setImageBitmap(icon.getIconAsBitmap());
+
+			
 		TextView refTextView = (TextView)findViewById(R.id.references);
 		refTextView.setText(notes);
 
 	}
+
+	private Icon getIconFromDb(Context context, Tip tip)
+	{
+        String iconName = tip.getIconName();
+        IconDbAdapter db = new IconDbAdapter(context);
+        db.open();
+		Icon icon = db.getIconByName(iconName);
+        db.close();
+
+		return icon;
+	}	
+	
 }
 	
