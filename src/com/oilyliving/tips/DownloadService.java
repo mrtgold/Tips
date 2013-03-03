@@ -89,6 +89,7 @@ public class DownloadService extends IntentService
 
 		if (!updateTips(tips, appContext)) return false;				
 		if (!updateIcons(icons, appContext)) return false;
+		if (!downloadMissingIcons(appContext)) return false;
 
 		return true;
 	}
@@ -101,6 +102,50 @@ public class DownloadService extends IntentService
 			db = new IconDbAdapter(appContext);
 			db.open();
 			db.tryUpdateIcons(icons);
+			db.close();
+		}
+		catch (SQLiteException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	private boolean downloadMissingIcons(Context appContext)
+	{
+		long startTime = new Date().getTime();
+		Log.d(TAG, "start downloadMissingIcons:" + startTime);
+		try
+		{
+			IconDbAdapter db;
+			db = new IconDbAdapter(appContext);
+			db.open();
+			Icon icon = null;
+			db.debugPrintAllIcons();
+			while (true)
+			{
+				icon = db.getIconToDownload(startTime);
+				if (icon == null)
+					break;
+
+				db.updateLastDownloadAttempt(icon, startTime);
+				Bitmap downloaded = null;
+				String serverUrl = icon.getServerUrl();
+				Log.d(TAG, "going to try to download " + icon.getName() + " from " + serverUrl);
+				downloaded = downloadBitmap(serverUrl);
+				if (downloaded != null)
+				{
+					Log.d(TAG, "got icon from " + icon.getServerUrl());
+					icon.setIcon(downloaded);
+					db.updateBitmapBytes(icon);
+				}
+				else
+				{
+					Log.d(TAG, "couldn't get icon from " + icon.getServerUrl());
+				}
+			}			
+			db.debugPrintAllIcons();
 			db.close();
 		}
 		catch (SQLiteException e)
@@ -192,54 +237,64 @@ public class DownloadService extends IntentService
 
 		return success;
 	}
-	
-	Bitmap downloadBitmap(String url) {
-//        final int IO_BUFFER_SIZE = 4 * 1024;
 
-        // AndroidHttpClient is not allowed to be used from the main thread
-        final HttpClient client = /*(mode == Mode.NO_ASYNC_TASK) ? new DefaultHttpClient() :*/
-            AndroidHttpClient.newInstance("Android");
+	Bitmap downloadBitmap(String url)
+	{
+        final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
         final HttpGet getRequest = new HttpGet(url);
 
-        try {
+        try
+		{
             HttpResponse response = client.execute(getRequest);
             final int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+			{
                 Log.w("ImageDownloader", "Error " + statusCode +
 					  " while retrieving bitmap from " + url);
                 return null;
             }
 
             final HttpEntity entity = response.getEntity();
-            if (entity != null) {
+            if (entity != null)
+			{
                 InputStream inputStream = null;
-                try {
+                try
+				{
                     inputStream = entity.getContent();
                     return BitmapFactory.decodeStream(inputStream);
-                } finally {
-                    if (inputStream != null) {
+                }
+				finally
+				{
+                    if (inputStream != null)
+					{
                         inputStream.close();
                     }
                     entity.consumeContent();
                 }
             }
-        } catch (IOException e) {
+        }
+		catch (IOException e)
+		{
             getRequest.abort();
             Log.w(TAG, "I/O error while retrieving bitmap from " + url, e);
-        } catch (IllegalStateException e) {
+        }
+		catch (IllegalStateException e)
+		{
             getRequest.abort();
             Log.w(TAG, "Incorrect URL: " + url);
-        } catch (Exception e) {
+        }
+		catch (Exception e)
+		{
             getRequest.abort();
             Log.w(TAG, "Error while retrieving bitmap from " + url, e);
-        } finally {
-            if ((client instanceof AndroidHttpClient)) {
-                ((AndroidHttpClient) client).close();
-            }
+        }
+		finally
+		{
+			client.close();
         }
         return null;
     }
-    
+
 
 	public boolean isOnline()
 	{

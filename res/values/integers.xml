@@ -3,4 +3,5 @@
     <integer name="DownloadSuccessIntervalMin">360</integer>
     <integer name="DownloadFailureIntervalMin">10</integer>
     <integer name="WidgetUpdateIntervalMsec">86400000</integer>
+    <integer name="WidgetUpdateIntervalMsecTest">30000</integer>
 </resources>

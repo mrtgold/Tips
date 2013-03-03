@@ -98,6 +98,11 @@ public class Icon implements Parcelable
 
     }
 
+    public void setIcon(Bitmap bitmap)
+	{
+        this.icon = bitmap;
+    }
+
     @Override
     public String toString()
 	{
