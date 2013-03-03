@@ -27,9 +27,9 @@ public class FullTipDialogActivity extends Activity
 		String tipText = tip.getTipText();
 		String notes = "";
 		String referenceUrl = tip.getWebReference();
-		if ( referenceUrl != null && !referenceUrl.trim().isEmpty())
+		if (referenceUrl != null && !referenceUrl.trim().isEmpty())
 		{
-			Log.d(TAG, "reference='" + referenceUrl +"'");
+			Log.d(TAG, "reference='" + referenceUrl + "'");
 			String link = " <sup><a href=\"" + referenceUrl + "\">[1]</a></sup>";
 			tipText = tipText + link;
 		}			
@@ -62,12 +62,19 @@ public class FullTipDialogActivity extends Activity
 		Icon icon = getIconFromDb(getApplicationContext(), tip);
 
 		ImageView iconView = (ImageView)findViewById(R.id.dialogIcon);
-		if (icon == null || icon.getIconAsBitmap() == null)
-			iconView.setImageResource( R.drawable.yllogo1);
-		else
+		if (icon == null)
+		{
+			Log.d(TAG,"iconName is null");
+			iconView.setImageResource(R.drawable.yllogo1);
+		}
+		else if (icon.getIconAsBitmap() == null)
+		{
+			Log.d(TAG,"icon bitmap is null");
+			iconView.setImageResource(R.drawable.yllogo1);
+		}else
 			iconView.setImageBitmap(icon.getIconAsBitmap());
 
-			
+
 		TextView refTextView = (TextView)findViewById(R.id.references);
 		refTextView.setText(notes);
 
@@ -76,6 +83,7 @@ public class FullTipDialogActivity extends Activity
 	private Icon getIconFromDb(Context context, Tip tip)
 	{
         String iconName = tip.getIconName();
+		Log.d(TAG, "iconName=" + iconName);
         IconDbAdapter db = new IconDbAdapter(context);
         db.open();
 		Icon icon = db.getIconByName(iconName);
@@ -83,6 +91,6 @@ public class FullTipDialogActivity extends Activity
 
 		return icon;
 	}	
-	
+
 }
 	

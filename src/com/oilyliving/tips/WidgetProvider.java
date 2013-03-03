@@ -51,11 +51,11 @@ public class WidgetProvider extends AppWidgetProvider
 		boolean pendingIntentExists = (PendingIntent.getBroadcast(appContext, 0, intent, PendingIntent.FLAG_NO_CREATE) != null);
 		if (pendingIntentExists)
 		{
-			Log.d(TAG,"DownloadService already running - don't start again");
+			Log.d(TAG, "DownloadService already running - don't start again");
 		}
 		else
 		{
-			Log.d(TAG,"DownloadService not running - start in 1 min");
+			Log.d(TAG, "DownloadService not running - start in 1 min");
 			// Start now
 			alarm.set(AlarmManager.RTC, cal.getTimeInMillis() + 60000, pIntent);
 		}
@@ -78,16 +78,16 @@ public class WidgetProvider extends AppWidgetProvider
 		remoteViews.setOnClickPendingIntent(R.id.tipText, pendingIntent);
 		remoteViews.setOnClickPendingIntent(R.id.icon, pendingIntent);
 
-        /*
-        // Create an Intent to update widget with next tip
-        Intent getNextIntent = new Intent(context, WidgetProvider.class);
 
-        getNextIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        getNextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+//        // Create an Intent to update widget with next tip
+//        Intent getNextTipIntent = new Intent(context, WidgetProvider.class);
+//
+//        getNextTipIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+//        getNextTipIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+//
+//        PendingIntent getNextTipPI = PendingIntent.getBroadcast(context, 0, getNextTipIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        remoteViews.setOnClickPendingIntent(R.id.icon, getNextTipPI);
 
-        PendingIntent getNextPI = PendingIntent.getBroadcast(context, 0, getNextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.next, getNextPI);
-        */
         return remoteViews;
 	}	
 
@@ -98,9 +98,17 @@ public class WidgetProvider extends AppWidgetProvider
 		remoteViews.setTextViewText(R.id.tipText, tip.getTipTextAndId());
 
 		Icon icon = getIconFromDb(context, tip);
-		
-		if (icon == null || icon.getIconAsBitmap() == null)
+
+		if (icon == null)
+		{	
+			Log.d(TAG, "icon not found in db, using ylIcon");
 			remoteViews.setImageViewResource(R.id.icon, R.drawable.yllogo1);
+		}
+		else if (icon.getIconAsBitmap() == null)
+		{	
+			Log.d(TAG, "icon bitmap not in db, using ylIcon");
+			remoteViews.setImageViewResource(R.id.icon, R.drawable.yllogo1);
+		}
 		else
 			remoteViews.setImageViewBitmap(R.id.icon, icon.getIconAsBitmap());
 

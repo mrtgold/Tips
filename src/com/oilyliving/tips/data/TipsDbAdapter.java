@@ -239,7 +239,7 @@ public class TipsDbAdapter
 
 	public void InitTips(Context context)
 	{
-		TipsBootstrap.initTips(db, this, context);
+		Bootstrap.initTips(db, this, context);
 	}
 
 
