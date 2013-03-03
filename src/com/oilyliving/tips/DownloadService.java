@@ -4,13 +4,19 @@ import android.app.*;
 import android.content.*;
 import android.content.res.*;
 import android.database.sqlite.*;
+import android.graphics.*;
 import android.net.*;
+import android.net.http.*;
 import android.provider.Settings.*;
 import android.util.*;
 import com.oilyliving.tips.data.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import org.apache.http.*;
+import org.apache.http.client.*;
+import org.apache.http.client.methods.*;
+import org.apache.http.impl.client.*;
 
 public class DownloadService extends IntentService
 {
@@ -40,7 +46,7 @@ public class DownloadService extends IntentService
 
 		try
 		{
-			success = downloadAndImport(appContext, success);
+			success = downloadAndImportTips(appContext, success);
 		}
 		catch (Exception e)
 		{
@@ -63,14 +69,14 @@ public class DownloadService extends IntentService
 		}
 	}
 
-	private boolean downloadAndImport(Context appContext, boolean success)
+	private boolean downloadAndImportTips(Context appContext, boolean success)
 	{
 		Log.i(TAG, "Checking internet access");
 
 //		if (!isOnline()) return false;
 
 		String androidId = Secure.getString(appContext.getContentResolver(), Secure.ANDROID_ID);
-		String urlPath = "http://oilytipsupdate.appspot.com/csv1?" + androidId;//context.getString(R.string.downloadUrl);
+		String urlPath = "http://oilytipsupdate.appspot.com/csv1?" + androidId;
 		Log.i(TAG, "Starting download: " + urlPath);
 
 		List<String> lines = new ArrayList<String>();
@@ -186,6 +192,54 @@ public class DownloadService extends IntentService
 
 		return success;
 	}
+	
+	Bitmap downloadBitmap(String url) {
+//        final int IO_BUFFER_SIZE = 4 * 1024;
+
+        // AndroidHttpClient is not allowed to be used from the main thread
+        final HttpClient client = /*(mode == Mode.NO_ASYNC_TASK) ? new DefaultHttpClient() :*/
+            AndroidHttpClient.newInstance("Android");
+        final HttpGet getRequest = new HttpGet(url);
+
+        try {
+            HttpResponse response = client.execute(getRequest);
+            final int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                Log.w("ImageDownloader", "Error " + statusCode +
+					  " while retrieving bitmap from " + url);
+                return null;
+            }
+
+            final HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                InputStream inputStream = null;
+                try {
+                    inputStream = entity.getContent();
+                    return BitmapFactory.decodeStream(inputStream);
+                } finally {
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+                    entity.consumeContent();
+                }
+            }
+        } catch (IOException e) {
+            getRequest.abort();
+            Log.w(TAG, "I/O error while retrieving bitmap from " + url, e);
+        } catch (IllegalStateException e) {
+            getRequest.abort();
+            Log.w(TAG, "Incorrect URL: " + url);
+        } catch (Exception e) {
+            getRequest.abort();
+            Log.w(TAG, "Error while retrieving bitmap from " + url, e);
+        } finally {
+            if ((client instanceof AndroidHttpClient)) {
+                ((AndroidHttpClient) client).close();
+            }
+        }
+        return null;
+    }
+    
 
 	public boolean isOnline()
 	{

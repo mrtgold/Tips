@@ -1,14 +1,13 @@
 package com.oilyliving.tips;
 
 import android.app.*;
+import android.content.*;
 import android.os.*;
-import android.view.*;
-import android.widget.*;
-import android.util.*;
-import android.text.method.*;
-import com.oilyliving.tips.data.*;
-import android.text.util.*;
 import android.text.*;
+import android.text.method.*;
+import android.util.*;
+import android.widget.*;
+import com.oilyliving.tips.data.*;
 
 
 public class FullTipDialogActivity extends Activity
@@ -28,7 +27,7 @@ public class FullTipDialogActivity extends Activity
 		String tipText = tip.getTipText();
 		String notes = "";
 		String referenceUrl = tip.getWebReference();
-		if (referenceUrl != null && referenceUrl != "")
+		if ( referenceUrl != null && !referenceUrl.trim().isEmpty())
 		{
 			Log.d(TAG, "reference='" + referenceUrl +"'");
 			String link = " <sup><a href=\"" + referenceUrl + "\">[1]</a></sup>";
@@ -38,17 +37,17 @@ public class FullTipDialogActivity extends Activity
 		int eopr = tip.getEoprPage();
 		if (eopr > 0)
 		{
-			String link= " <sup>[EPRO:" + eopr + "]</sup>";
+			String link= " <sup>[PR:" + eopr + "]</sup>";
 			tipText = tipText + link;
-			notes = notes + "ERPO = Essential Oils Pocket Reference\n";
+			notes = notes + "PR = Essential Oils Pocket Reference\n";
 		}			
 
 		int rgeo = tip.getRgeoPage();
 		if (rgeo > 0)
 		{
-			String link= " <sup>[RGEO:" + rgeo + "]</sup>";
+			String link= " <sup>[RG:" + rgeo + "]</sup>";
 			tipText = tipText + link;
-			notes = notes + "RGEO = Reference Guide for Essential Oils\n";
+			notes = notes + "RG = Reference Guide for Essential Oils\n";
 		}			
 
 		TextView tipTextView = (TextView)findViewById(R.id.dialogTipText);
@@ -60,12 +59,30 @@ public class FullTipDialogActivity extends Activity
 		link.setMovementMethod(LinkMovementMethod.getInstance());
 		Log.d(TAG, "link=" + link.getText());
 
-		ImageView iconView = (ImageView)findViewById(R.id.dialogIcon);
-		iconView.setImageBitmap(tip.getIcon().getIconAsBitmap());
+		Icon icon = getIconFromDb(getApplicationContext(), tip);
 
+		ImageView iconView = (ImageView)findViewById(R.id.dialogIcon);
+		if (icon == null || icon.getIconAsBitmap() == null)
+			iconView.setImageResource( R.drawable.yllogo1);
+		else
+			iconView.setImageBitmap(icon.getIconAsBitmap());
+
+			
 		TextView refTextView = (TextView)findViewById(R.id.references);
 		refTextView.setText(notes);
 
 	}
+
+	private Icon getIconFromDb(Context context, Tip tip)
+	{
+        String iconName = tip.getIconName();
+        IconDbAdapter db = new IconDbAdapter(context);
+        db.open();
+		Icon icon = db.getIconByName(iconName);
+        db.close();
+
+		return icon;
+	}	
+	
 }
 	

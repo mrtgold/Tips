@@ -10,7 +10,7 @@ public final class IconsBootstrap
 	public static void initIcons(Context context, SQLiteDatabase db, IconDbAdapter icons)
 	{
 		db.beginTransaction();
-		icons.deleteAll();
+//		icons.deleteAll();
 
 		Bitmap ylIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.yllogo1);
 		Bitmap thievesIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.thieves1);
@@ -21,15 +21,15 @@ public final class IconsBootstrap
 		Bitmap peppermint = BitmapFactory.decodeResource(context.getResources(), R.drawable.peppermint);
 		Bitmap rc = BitmapFactory.decodeResource(context.getResources(), R.drawable.rc);
 		Bitmap purification = BitmapFactory.decodeResource(context.getResources(), R.drawable.purification);
-		icons.insertIcon(new Icon("peppermint", peppermint));
-		icons.insertIcon(new Icon("ylIcon", ylIcon));
-		icons.insertIcon(new Icon("rc", rc));
-		icons.insertIcon(new Icon("thievesIcon", thievesIcon));
-		icons.insertIcon(new Icon("frankincense", frankincense));
-		icons.insertIcon(new Icon("lavenderIcon", lavenderIcon));
-		icons.insertIcon(new Icon("kidScentsIcon", kidScentsIcon));
-		icons.insertIcon(new Icon("thievesSpray", thievesSpray));
-		icons.insertIcon(new Icon("purification", purification));
+		icons.insertOrUpdate(new Icon("peppermint", peppermint));
+		icons.insertOrUpdate(new Icon("ylIcon", ylIcon));
+		icons.insertOrUpdate(new Icon("rc", rc));
+		icons.insertOrUpdate(new Icon("thievesIcon", thievesIcon));
+		icons.insertOrUpdate(new Icon("frankincense", frankincense));
+		icons.insertOrUpdate(new Icon("lavenderIcon", lavenderIcon));
+		icons.insertOrUpdate(new Icon("kidScentsIcon", kidScentsIcon));
+		icons.insertOrUpdate(new Icon("thievesSpray", thievesSpray));
+		icons.insertOrUpdate(new Icon("purification", purification));
 
 		db.setTransactionSuccessful();
 		db.endTransaction();

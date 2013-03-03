@@ -1,0 +1,8 @@
+1.0.4
+- Fixed NPE Icon
+
+1.0.3 
+- Fixed link bug, typos
+
+1.0.2 
+- First public release!

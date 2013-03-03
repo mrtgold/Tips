@@ -21,7 +21,7 @@ public class Tip implements Parcelable
 	private int eoprPage = 0;
 	private int rgeoPage = 0;
 	private Date lastModified = new Date(0);
-	private Icon icon = null;
+//	private Icon icon = null;
 
     public Tip(int tipId, String tipText, String iconName, String reference, Date lastUpdated)
 	{
@@ -39,14 +39,14 @@ public class Tip implements Parcelable
 		this.iconName = iconName;
     }
 
-    public Tip(int tipId, String tipText, Icon icon)
-	{
-		this.tipId = tipId;
-        this.tipText = tipText;
-        this.icon = icon;
-        this.iconName = icon.getName();
-	}
-
+//    public Tip(int tipId, String tipText, Icon icon)
+//	{
+//		this.tipId = tipId;
+//        this.tipText = tipText;
+//        this.icon = icon;
+//        this.iconName = icon.getName();
+//	}
+//
 	public void setWebReference(String webReference)
 	{
 		this.webReference = webReference;
@@ -101,15 +101,10 @@ public class Tip implements Parcelable
 		return this.lastModified;
 	}
 
-    public Icon getIcon()
-	{
-        return this.icon;
-    }
-
-	public void setIcon(Icon icon)
-	{
-		this.icon = icon;
-	}
+//    public Icon getIcon()
+//	{
+//        return this.icon;
+//    }
 
 
     @Override
@@ -132,7 +127,7 @@ public class Tip implements Parcelable
 		out.writeInt(eoprPage);
 		out.writeInt(rgeoPage);
 		out.writeLong(lastModified.getTime());
-		icon.writeToParcel(out, 0);		
+//		out.writeValue(icon);		
 		Log.d(TAG, "parcel.dataSize:" + out.dataSize());		
 	}
 
@@ -147,7 +142,8 @@ public class Tip implements Parcelable
 		eoprPage = in.readInt();
 		rgeoPage = in.readInt();
 		lastModified = new Date(in.readLong());
-		icon = Icon.CREATOR.createFromParcel(in);
+//		icon= in.readParcelable(Icon.class.getClassLoader());
+//		icon = Icon.CREATOR.createFromParcel(in);
 
 		Log.d(TAG, "tipText=" + tipText);		
 		Log.d(TAG, "reference=" + webReference);		

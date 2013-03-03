@@ -59,22 +59,27 @@ public class TipsDbAdapter
 
 		for (Tip downloadedTip : tips)
 		{
-			Log.d(TAG, "Try update tip:" + downloadedTip);
+			insertOrUpdate(downloadedTip);
+		}
+	}
 
-			Tip tipFromDb = getTipById(downloadedTip.getTipId());
-			if (tipFromDb == null)
-			{
-				Log.d(TAG, "Tip does not exist, inserting");
-				insertTip(downloadedTip);
-			}
-			else if (tipFromDb.getLastModifiedDate().before(downloadedTip.getLastModifiedDate()))
-			{
-				Log.d(TAG, "Existing tip is older, updating");
-				Log.d(TAG, "from db:" + tipFromDb);
-				updateTip(downloadedTip);
-				Tip confirm = getTipById(downloadedTip.getTipId());
-				Log.d(TAG, "confirm updated:" + confirm);
-			}
+	public void insertOrUpdate(Tip tip)
+	{
+		Log.d(TAG, "Try update tip:" + tip);
+
+		Tip tipFromDb = getTipById(tip.getTipId());
+		if (tipFromDb == null)
+		{
+			Log.d(TAG, "Tip does not exist, inserting");
+			insertTip(tip);
+		}
+		else if (tipFromDb.getLastModifiedDate().before(tip.getLastModifiedDate()))
+		{
+			Log.d(TAG, "Existing tip is older, updating");
+			Log.d(TAG, "from db:" + tipFromDb);
+			updateTip(tip);
+			Tip confirm = getTipById(tip.getTipId());
+			Log.d(TAG, "confirm updated:" + confirm);
 		}
 	}
 
