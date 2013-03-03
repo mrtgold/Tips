@@ -1,8 +1,3 @@
-1.0.4
-- Fixed NPE Icon
-
-1.0.3 
-- Fixed link bug, typos
-
-1.0.2 
-- First public release!
+1.0.5 - download images for new tips
+1.0.3, 1.04 - Bug fixes
+1.0.2 - First public release!
