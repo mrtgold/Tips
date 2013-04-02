@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_margin="8dip"
+>
+	<ImageView
+		android:id="@+id/dialogIcon"
+		android:layout_width="90dp"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="4dp"
+		android:layout_marginRight="8dp"
+		android:layout_marginTop="8dp"
+		android:src="@drawable/yllogo1"
+		android:contentDescription="icon"
+		android:layout_alignParentLeft="true"
+	/>
+	<TextView
+		android:id="@+id/dialogTipText"
+		style="@android:style/TextAppearance.Medium"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal|center_vertical"
+		android:layout_margin="4dip"
+		android:text=" "
+		android:layout_alignParentRight="true"
+		android:layout_toRightOf="@+id/dialogIcon"
+	/>
+	<TextView
+		android:id="@+id/dialogLink"
+		style="@android:style/TextAppearance.Large"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal|center_vertical"
+		android:layout_margin="4dip"
+		android:text="@string/link"		
+		android:layout_toRightOf="@+id/dialogIcon"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/dialogTipText"
+	/>
+	<TextView
+		android:id="@+id/references"
+		style="@android:style/TextAppearance.Small"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal|center_vertical"
+		android:layout_margin="4dip"
+		android:text=""
+		android:layout_below="@+id/dialogLink"
+		android:layout_alignParentRight="true"
+	/>
+</RelativeLayout>
+

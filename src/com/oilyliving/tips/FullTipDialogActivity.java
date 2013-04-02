@@ -18,7 +18,7 @@ public class FullTipDialogActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dialog);
+		setContentView(R.layout.dialog_relative);
 
 		Bundle extras = getIntent().getExtras();
 
