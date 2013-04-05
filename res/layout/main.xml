@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+		style="@android:style/Widget.Button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Not an app!"
+		/>
+
+    <TextView
+		style="@android:style/TextAppearance.Medium"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/notAnApp" />
+	
+    <TextView
+		style="@android:style/TextAppearance.Medium"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/insertingWidget" />
+
+	<TextView
+		style="@android:style/TextAppearance.Medium"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/usingWidget" />
+
+	<TextView
+		style="@android:style/TextAppearance.Medium"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updatingWidget" />
+
+	
+	
+	<Button 
+		android:id="@+id/done"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/done" />
+
+</LinearLayout>

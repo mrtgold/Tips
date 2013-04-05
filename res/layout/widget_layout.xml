@@ -4,7 +4,9 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_margin="8dip"
-	android:background="@drawable/myshape">
+	android:background="@drawable/myshape"
+	style="@android:style/Widget"
+	>
 
     <ImageView
 		android:id="@+id/icon"
