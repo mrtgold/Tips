@@ -4,12 +4,12 @@
     <string name="app_name">OilyTips</string>
 
     <string name="done">Done</string>
-    <string name="notAnApp">This application is \'only\' a widget (like a Windows or Mac \'gadget\')"</string>
+    <string name="notAnApp">This application is a widget like a Windows or Mac \'gadget\' that lives on your homescreen.\n\n"</string>
     <string name="setupWidgetTablet">Here\'s how to setup a widget on a tablet\n Step 1:\n>"</string>
     <string name="setupWidgetPhone">Here\'s how to setup a widget on a phone\n Step 1:\n>"</string>
-    <string name="insertingWidget">Instead of \"running\" widgets, you add them to your homescreen. To insert a widget, find a free place on your homescreen, then long-press in that place and select "Widgets" then "Oily Tips Widget".</string>
-    <string name="usingWidget">Tap on the OilyTip to expand the tip in a larger window. You can follow the footnote references to the sources or background information for some the tips.</string>
-    <string name="updatingWidget">When you have an OilyTips widget installed, it will update its tip once a day and will periodically download new tips from our server. Other than that, the OilyTips widget does not consume any system resources, data or battery. </string>
+    <string name="insertingWidget">Instead of \"running\" widgets, you add them to your homescreen. To insert a widget, find a free place on your homescreen, then long-press in that place and select "Widgets" then "Oily Tips Widget"\n\n</string>
+    <string name="usingWidget">Tap on the OilyTip to expand the tip in a larger window. You can follow the footnote references to the sources or background information for some the tips.\n\n</string>
+    <string name="updatingWidget">When you have an OilyTips widget installed, it will update its tip once a day and will periodically download new tips from our server. Other than that, the OilyTips widget does not consume any system resources, data or battery.\n\n</string>
 	
 		
 	<string name="link"><a href="http://youngliving.com/chandragolding">Order yours today!</a></string>

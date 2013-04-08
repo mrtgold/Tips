@@ -1,14 +1,10 @@
 package com.oilyliving.tips;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.text.style.QuoteSpan;
-import android.view.View.OnClickListener;
-import android.view.View;
-import android.widget.Toast;
-import android.widget.Button;
-import android.widget.EditText;
-import android.content.Context;
+import android.app.*;
+import android.os.*;
+import android.view.*;
+import android.view.View.*;
+import android.widget.*;
 
 public class MainActivity extends Activity
 {

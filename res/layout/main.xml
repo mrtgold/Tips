@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
+    android:orientation="vertical" 
+	android:fillViewport="true"
+	android:scrollbars="vertical"
+	>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" 
+		android:scrollbars="vertical"
+	>
     <TextView
 		style="@android:style/Widget.Button"
-        android:layout_width="fill_parent"
+        android:clickable="false"
+		android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Not an app!"
 		/>
@@ -16,6 +25,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/notAnApp" />
+
+	<TextView
+		style="@android:style/Widget.Button"
+        android:clickable="false"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Adding Oily Tips to your homescreen"
+	/>
 	
     <TextView
 		style="@android:style/TextAppearance.Medium"
@@ -24,11 +41,26 @@
         android:text="@string/insertingWidget" />
 
 	<TextView
+		style="@android:style/Widget.Button"
+        android:clickable="false"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Using Oily Tips"
+	/>
+
+	<TextView
 		style="@android:style/TextAppearance.Medium"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/usingWidget" />
 
+	<TextView
+		style="@android:style/Widget.Button"
+        android:clickable="false"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Updating Oily Tips"
+	/>
 	<TextView
 		style="@android:style/TextAppearance.Medium"
         android:layout_width="fill_parent"
@@ -43,4 +75,5 @@
 		android:layout_height="wrap_content"
 		android:text="@string/done" />
 
-</LinearLayout>
+	</LinearLayout>
+</ScrollView>
