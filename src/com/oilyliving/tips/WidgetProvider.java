@@ -95,7 +95,7 @@ public class WidgetProvider extends AppWidgetProvider
 	{
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
-		remoteViews.setTextViewText(R.id.tipText, tip.getTipTextAndId());
+		remoteViews.setTextViewText(R.id.tipText, tip.getTipText());
 
 		Icon icon = getIconFromDb(context, tip);
 
